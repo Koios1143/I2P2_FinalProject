@@ -50,3 +50,21 @@ bool GameWindow::mouse_hover(int startx, int starty, int width, int height)
 
     return false;
 }
+
+void GameWindow::game_play()
+{
+    int msg;
+
+    srand(time(NULL));
+
+    msg = -1;
+    game_reset();
+    game_begin();
+
+    while(msg != GAME_EXIT)
+    {
+        msg = game_run();
+    }
+
+    show_err_msg(msg);
+}
