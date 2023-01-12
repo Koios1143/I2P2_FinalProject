@@ -130,7 +130,13 @@ void GameWindow::draw_running_map()
 
     al_clear_to_color(al_map_rgb(100, 100, 100));
     al_draw_bitmap(background, 0, 0, 0);
+    al_draw_scaled_bitmap(
+        background,
+        0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background),
+        0, 0, window_width, window_height, 0
+    );
 
+    al_draw_bitmap;
     
 
     al_flip_display();
