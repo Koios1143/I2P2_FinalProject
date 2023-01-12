@@ -57,7 +57,7 @@ public:
 
 private:
     ALLEGRO_BITMAP *icon;
-    ALLEGRO_BITMAP *bird[3];
+    ALLEGRO_BITMAP *ground;
     ALLEGRO_BITMAP *background = NULL;
 
     ALLEGRO_DISPLAY* display = NULL;
