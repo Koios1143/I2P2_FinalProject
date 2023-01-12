@@ -2,11 +2,7 @@
 #define BUTTOM_H_INCLUDE
 
 #include "Object.h"
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_image.h>
-#include <allegro5/allegro_audio.h>
-#include <allegro5/allegro_font.h>
-#include <allegro5/allegro_ttf.h>
+#include "global.h"
 
 class Buttom: public Object
 {
@@ -17,6 +13,7 @@ class Buttom: public Object
 
         void Draw();
         void ToggleClicked();
+        bool mouse_hover(int mouse_x, int mouse_y);
 
         static float volume;
     protected:

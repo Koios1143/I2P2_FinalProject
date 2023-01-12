@@ -1,5 +1,7 @@
 #include "Buttom.h"
 
+float Buttom::volume = 1.0;
+
 Buttom::Buttom(int pos_x, int pos_y, int width, int height){
     this->rect = new Rect(pos_x, pos_y, width, height);
 
@@ -35,4 +37,11 @@ void Buttom::ToggleClicked(){
     al_attach_sample_instance_to_mixer(buttom, al_get_default_mixer());
     al_set_sample_instance_gain(buttom, Buttom::volume);
     al_play_sample_instance(buttom);
+}
+
+bool Buttom::mouse_hover(int mouse_x, int mouse_y) {
+    if (mouse_x <= rect->x + rect->w && mouse_x >= rect->x && mouse_y >= rect->y && mouse_y <= rect->y + rect->h) {
+        return true;
+    }
+    return false;
 }

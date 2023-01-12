@@ -126,7 +126,7 @@ int GameWindow::game_run()
 
 void GameWindow::draw_running_map()
 {
-    unsigned int i, j;
+    // unsigned int i, j;
 
     al_clear_to_color(al_map_rgb(100, 100, 100));
     al_draw_bitmap(background, 0, 0, 0);
@@ -136,7 +136,6 @@ void GameWindow::draw_running_map()
         0, 0, window_width, window_height, 0
     );
 
-    al_draw_bitmap;
     
 
     al_flip_display();
@@ -187,12 +186,11 @@ void GameWindow::show_err_msg(int msg)
 
 int GameWindow::process_event()
 {
-    int i;
     int instruction = GAME_CONTINUE;
 
     // offset for pause window
-    int offsetX = field_width/2 - 200;
-    int offsetY = field_height/2 - 200;
+    // int offsetX = field_width/2 - 200;
+    // int offsetY = field_height/2 - 200;
 
     al_wait_for_event(event_queue, &event);
     redraw = false;
@@ -231,7 +229,7 @@ int GameWindow::process_event()
     }
     else if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
         if(event.mouse.button == 1) {
-            
+            change_state = true;
 
         }
     }
@@ -239,6 +237,19 @@ int GameWindow::process_event()
         mouse_x = event.mouse.x;
         mouse_y = event.mouse.y;
 
+    }
+
+    if(change_state) {
+        switch(state) {
+            case MENU:
+            case GET_READY:
+            case IN_GAME:
+            case GAME_OVER:
+            default:
+                state = state;
+                break;
+        }
+        change_state = false;
     }
 
     if(redraw) {

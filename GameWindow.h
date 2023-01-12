@@ -24,6 +24,9 @@ const float FPS = 60;
 // total number of level
 const int LevelNum = 4;
 
+// the state type
+enum State{ MENU = 0, GET_READY, IN_GAME, GAME_OVER };
+
 
 class GameWindow
 {
@@ -72,10 +75,12 @@ private:
     ALLEGRO_SAMPLE *sample = NULL;
     ALLEGRO_SAMPLE_INSTANCE *passSound = NULL;
     ALLEGRO_SAMPLE_INSTANCE *hitSound = NULL;
-    ALLEGRO_SAMPLE_INSTANCE *flapSound = NULL;
+    ALLEGRO_SAMPLE_INSTANCE *wingSound = NULL;
 
+    State state = MENU;
     
     int mouse_x, mouse_y;
+    bool change_state = false;
 
     bool redraw = false;
     bool mute = false;
