@@ -2,8 +2,9 @@
 #define BIRD_H_INCLUDED
 #include "Object.h"
 #include "global.h"
-#define click_velocity -5
-#define gravity 0.3
+#define click_velocity -12
+#define gravity 0.8
+#define critical_velocity 12
 
 class Bird: public Object
 {

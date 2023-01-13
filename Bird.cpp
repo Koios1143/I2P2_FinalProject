@@ -3,7 +3,7 @@
 // set counter frequency of drawing moving animation
 const int draw_frequency = 5;
 
-float Bird::volume = 1.0;
+float Bird::volume = 2.0;
 
 Bird::Bird()
 {
@@ -16,6 +16,9 @@ Bird::Bird()
     sample = al_load_sample("./sound/sfx_wing.wav");
     wingSound = al_create_sample_instance(sample);
 
+    al_set_sample_instance_playmode(wingSound, ALLEGRO_PLAYMODE_ONCE);
+    al_attach_sample_instance_to_mixer(wingSound, al_get_default_mixer());
+    al_set_sample_instance_gain(wingSound, Bird::volume);
 }
 
 Bird::~Bird()
@@ -89,8 +92,8 @@ bool Bird::Move()
 
     if (!isReachGround) rect->y += velocity;
     if (rect->y + rect->h > ground_height) isReachGround = true;
-    
-    velocity += acceleration;
+
+    if (velocity < critical_velocity) velocity += acceleration;
 
     if (rect->y >= ground_height) {
         return true;
@@ -101,6 +104,8 @@ bool Bird::Move()
 
 void Bird::ClickDetected()
 {
+    al_set_sample_instance_position(wingSound, 0);
+    al_play_sample_instance(wingSound);
     isReachGround = false;
     velocity = click_velocity;
 }
