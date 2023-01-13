@@ -24,8 +24,6 @@ void GameWindow::game_init()
     resumebuttom = new ResumeButtom(100, 100);
     okbuttom = new OkButtom(window_width/2, window_height-200);
 
-    FPS_count = 0;
-    PIPEs.clear();
     // Initialize Titles
     menutitle = new MenuTitle(window_width/2, upper_bound);
 
@@ -358,6 +356,8 @@ int GameWindow::process_event()
     if(change_state) {
         if (state == MENU) {
             state = IN_GAME;
+            FPS_count = 0;
+            PIPEs.clear();
             flappyBird->Reset();
         } else if (state == IN_GAME) {
             state = GAME_OVER;
