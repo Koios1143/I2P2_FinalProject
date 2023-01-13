@@ -15,7 +15,7 @@ void GameWindow::game_init()
     char buffer[50];
 
     icon = al_load_bitmap("./img/Flappy_Bird_icon.png");
-    background = al_load_bitmap("./img/background/background_day.png");
+    background = al_load_bitmap("./img/background/background_night.png");
     ground = al_load_bitmap("./img/ground.png");
     startbuttom = new StartButtom(window_width/2, window_height-200);
     pausebuttom = new PauseButtom(100, 100);
@@ -197,6 +197,7 @@ int GameWindow::game_update()
     if (state == IN_GAME) {
         isreachground = flappyBird->Move();
         if (isreachground) {
+            state = GAME_OVER;
             change_state = true;
         }
     }
@@ -229,10 +230,6 @@ int GameWindow::process_event()
     if(event.type == ALLEGRO_EVENT_TIMER) {
         if(event.timer.source == timer) {
             redraw = true;
-
-        }
-        else {
-            
         }
     }
     else if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
@@ -243,10 +240,10 @@ int GameWindow::process_event()
 
             case ALLEGRO_KEY_P:
                 pausebuttom->ToggleClicked();
-                if(al_get_timer_started(timer)) {
+                if(al_get_timer_started(timer) && state == IN_GAME) {
                     al_stop_timer(timer);
                 }
-                else {
+                else if (state == IN_GAME) {
                     al_start_timer(timer);
                 }
                 break;

@@ -1,8 +1,10 @@
-#include "./GameWindow.h"
+#include "GameWindow.h"
+
+GameWindow *FlappyBird;
 
 int main(int argc, char *argv[])
 {
-    GameWindow *FlappyBird= new GameWindow();
+    FlappyBird= new GameWindow();
 
     FlappyBird->game_play();
 

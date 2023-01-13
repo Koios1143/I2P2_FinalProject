@@ -1,4 +1,5 @@
 #include "Bird.h"
+#include "GameWindow.h"
 
 // set counter frequency of drawing moving animation
 const int draw_frequency = 5;
@@ -104,8 +105,11 @@ bool Bird::Move()
 
 void Bird::ClickDetected()
 {
-    al_set_sample_instance_position(wingSound, 0);
-    al_play_sample_instance(wingSound);
+    if (al_get_timer_started(FlappyBird->GetTimer())) {
+        al_set_sample_instance_position(wingSound, 0);
+        al_play_sample_instance(wingSound);
+    }
+    
     isReachGround = false;
     velocity = click_velocity;
 }
