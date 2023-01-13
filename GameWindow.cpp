@@ -17,8 +17,11 @@ void GameWindow::game_init()
     icon = al_load_bitmap("./img/Flappy_Bird_icon.png");
     background = al_load_bitmap("./img/background/background_night.png");
     ground = al_load_bitmap("./img/ground.png");
+
+    // Initialize Buttoms
     startbuttom = new StartButtom(window_width/2, window_height-200);
     pausebuttom = new PauseButtom(100, 100);
+    resumebuttom = new ResumeButtom(100, 100);
     okbuttom = new OkButtom(window_width/2, window_height-200);
 
     al_set_display_icon(display, icon);
@@ -131,8 +134,6 @@ int GameWindow::game_run()
 
 void GameWindow::draw_running_map()
 {
-    // unsigned int i, j;
-
     al_clear_to_color(al_map_rgb(100, 100, 100));
     al_draw_bitmap(background, 0, 0, 0);
     al_draw_scaled_bitmap(
@@ -151,7 +152,9 @@ void GameWindow::draw_running_map()
         startbuttom->Draw();
     }
     else if(state == IN_GAME) {
-        pausebuttom->Draw();
+        if(pause) resumebuttom->Draw();
+        else pausebuttom->Draw();
+
         flappyBird->Draw();
     }
     else if(state == GAME_OVER){
@@ -230,6 +233,9 @@ int GameWindow::process_event()
         if(event.timer.source == timer) {
             redraw = true;
         }
+        else {
+            
+        }
     }
     else if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
         return GAME_EXIT;
@@ -238,12 +244,14 @@ int GameWindow::process_event()
         switch(event.keyboard.keycode) {
 
             case ALLEGRO_KEY_P:
-                pausebuttom->ToggleClicked();
-                if(al_get_timer_started(timer) && state == IN_GAME) {
+                if(al_get_timer_started(timer)) {
+                    pause = true;
+                    draw_running_map();
                     al_stop_timer(timer);
                 }
                 else if (state == IN_GAME) {
                     al_start_timer(timer);
+                    pause = false;
                 }
                 break;
             case ALLEGRO_KEY_M:
@@ -257,9 +265,6 @@ int GameWindow::process_event()
     }
     else if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
         if(event.mouse.button == 1) {
-            //change_state = true;
-
-            // TODO:
             if(startbuttom != NULL && state == MENU){
                 selectedStart = startbuttom->mouse_hover(mouse_x, mouse_y);
             }
@@ -268,6 +273,9 @@ int GameWindow::process_event()
                 if (!selectedPause) {
                     flappyBird->ClickDetected();
                 }
+            }
+            if(resumebuttom != NULL && state == IN_GAME){
+                selectedResume = resumebuttom->mouse_hover(mouse_x, mouse_y);
             }
             if(okbuttom != NULL && state == GAME_OVER){
                 selectedOk = okbuttom->mouse_hover(mouse_x, mouse_y);
@@ -281,10 +289,13 @@ int GameWindow::process_event()
             else if(state == IN_GAME){
                 if(selectedPause){
                     if(al_get_timer_started(timer)){
+                        pause = true;
+                        draw_running_map();
                         al_stop_timer(timer);
                     }
                     else{
                         al_start_timer(timer);
+                        pause = false;
                     }
                 }
             }

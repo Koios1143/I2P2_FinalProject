@@ -8,6 +8,8 @@ class StartButtom: public Buttom{
             buttom_img = al_load_bitmap("./img/buttom/buttom_start.png");
             this->rect->w = al_get_bitmap_width(buttom_img);
             this->rect->h = al_get_bitmap_height(buttom_img);
+            this->rect->x -= this->rect->w / 2;
+            this->rect->y -= this->rect->h / 2;
         }
 };
 

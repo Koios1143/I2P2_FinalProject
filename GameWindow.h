@@ -7,6 +7,7 @@
 #include "StartButtom.h"
 #include "PauseButtom.h"
 #include "OkButtom.h"
+#include "ResumeButtom.h"
 #include "Bird.h"
 
 #define GAME_INIT -1
@@ -82,6 +83,7 @@ private:
     StartButtom *startbuttom = NULL;
     PauseButtom *pausebuttom = NULL;
     OkButtom *okbuttom = NULL;
+    ResumeButtom *resumebuttom = NULL;
 
     State state = MENU;
 
@@ -91,7 +93,9 @@ private:
     bool change_state = false;
     bool selectedStart = 0;
     bool selectedOk = 0;
-    bool selectedPause = 0;
+    bool selectedPause = false;
+    bool selectedResume = false;
+    bool pause = false;
 
     bool redraw = false;
     bool mute = false;
