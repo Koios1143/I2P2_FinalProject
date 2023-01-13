@@ -24,6 +24,7 @@ void GameWindow::game_init()
     resumebuttom = new ResumeButtom(100, 100);
     okbuttom = new OkButtom(window_width/2, window_height-200);
 
+    FPS_count = 0;
     PIPEs.clear();
 
     al_set_display_icon(display, icon);
@@ -144,6 +145,21 @@ void GameWindow::draw_running_map()
         0, 0, window_width + 10, window_height + 10, 0
     );
 
+    if(state == MENU){
+        
+    }
+    else if(state == IN_GAME) {
+        // Draw pipes
+        for(auto pipe: PIPEs){
+            pipe->Draw();
+        }
+
+        flappyBird->Draw();
+    }
+    else if(state == GAME_OVER){
+        
+    }
+
     al_draw_scaled_bitmap(
         ground, 0, 0, 
         al_get_bitmap_width(ground), al_get_bitmap_height(ground),
@@ -156,8 +172,6 @@ void GameWindow::draw_running_map()
     else if(state == IN_GAME) {
         if(pause) resumebuttom->Draw();
         else pausebuttom->Draw();
-
-        flappyBird->Draw();
     }
     else if(state == GAME_OVER){
         okbuttom->Draw();
@@ -202,8 +216,19 @@ int GameWindow::game_update()
     if (state == IN_GAME) {
         isreachground = flappyBird->Move();
         if (isreachground) {
-            state = GAME_OVER;
             change_state = true;
+        }
+
+        // Update every pipes
+        for(int i=0 ; i<PIPEs.size() ; i++){
+            Pipe* pipe = PIPEs[i];
+            if(pipe->getX() < -PIPE_W){
+                PIPEs.erase(PIPEs.begin() + i);
+                i--;
+            }
+            else{
+                pipe->update_pos(pipe->getX() - PIPE_dx, pipe->getY());
+            }
         }
     }
 
@@ -235,6 +260,15 @@ int GameWindow::process_event()
     if(event.type == ALLEGRO_EVENT_TIMER) {
         if(event.timer.source == timer) {
             redraw = true;
+            if(FPS_count + 1 >= (int)FPS){
+                FPS_count = 0;
+                int offset = rand() % (PIPE_RAND_MAX - PIPE_RAND_MIN + 1) + PIPE_RAND_MIN;
+                PIPEs.emplace_back(new Pipe(window_width + 100, - 7 * PIPE_H / 8 + offset, PI));
+                PIPEs.emplace_back(new Pipe(window_width + 100, - 7 * PIPE_H / 8 + offset + GAP_LEN + PIPE_H, 0));
+            }
+            else{
+                FPS_count += 1;
+            }
         }
         else {
             
@@ -286,7 +320,6 @@ int GameWindow::process_event()
             
             if(state == MENU){
                 if(selectedStart){
-                    state = IN_GAME;
                     change_state = true;
                 }
             }
@@ -305,7 +338,6 @@ int GameWindow::process_event()
             }
             else if(state == GAME_OVER){
                 if(selectedOk){
-                    state = MENU;
                     change_state = true;
                 }
             }
@@ -318,6 +350,14 @@ int GameWindow::process_event()
     }
 
     if(change_state) {
+        if (state == MENU) {
+            state = IN_GAME;
+            flappyBird->Reset();
+        } else if (state == IN_GAME) {
+            state = GAME_OVER;
+        } else if (state == GAME_OVER) {
+            state = MENU;
+        }
         change_state = false;
     }
 

@@ -101,6 +101,7 @@ private:
     bool redraw = false;
     bool mute = false;
 
+    int FPS_count;
     std::vector<Pipe*> PIPEs;
 };
 

@@ -66,9 +66,11 @@ void Bird::Load_move()
 void Bird::Reset()
 {
     rect->x = window_width / 4;
-    rect->y = window_height / 2;
+    rect->y = window_height / 3;
     rect->w = al_get_bitmap_width(flyImg[0]);
     rect->h = al_get_bitmap_height(flyImg[0]);
+
+    velocity = 0;
 }
 
 void Bird::Draw()
@@ -96,7 +98,8 @@ bool Bird::Move()
 
     if (velocity < critical_velocity) velocity += acceleration;
 
-    if (rect->y >= ground_height) {
+    if (isReachGround) {
+        isReachGround = false;
         return true;
     }
 
