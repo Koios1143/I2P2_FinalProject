@@ -5,13 +5,27 @@
 
 class Bird: public Object
 {
-    ALLEGRO_BITMAP *bird_img[3];
-    ALLLEGRO_SAMPLE_INSTANCE *wingSound = nullptr;
-    AllEGRO_SAMPLE *sample = nullptr;
+    std::vector<ALLEGRO_BITMAP*> flyImg;
+    ALLEGRO_SAMPLE_INSTANCE *wingSound = nullptr;
+    ALLEGRO_SAMPLE *sample = nullptr;
+
+    // animation counter
+    int counter;
+    // animation image
+    int sprite_pos;
+    int img_count;
+
+    // check the gameover condition
+    bool ishit = false;
+
+    static float volume;
 public:
-    
-
-
+    Bird();
+    ~Bird();
+    void Load_move();
+    void Draw();
+    bool Move();
+    void Reset();
 
 };
 
