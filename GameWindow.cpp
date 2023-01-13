@@ -18,6 +18,8 @@ void GameWindow::game_init()
     background = al_load_bitmap("./img/background/background_day.png");
     ground = al_load_bitmap("./img/ground.png");
     startbuttom = new StartButtom(window_width/2, window_height-200);
+    pausebuttom = new PauseButtom(100, 100);
+    okbuttom = new OkButtom(window_width/2, window_height-200);
 
     al_set_display_icon(display, icon);
     al_reserve_samples(3);
@@ -140,14 +142,14 @@ void GameWindow::draw_running_map()
     );
 
     if(state == MENU){
-        if(startbuttom != NULL) startbuttom->Draw();
+        startbuttom->Draw();
     }
     else if(state == IN_GAME) {
-        if(pausebuttom != NULL) pausebuttom->Draw();
+        pausebuttom->Draw();
         flappyBird->Draw();
     }
     else if(state == GAME_OVER){
-        if(okbuttom != NULL) okbuttom->Draw();
+        okbuttom->Draw();
     }
 
     al_flip_display();
@@ -178,6 +180,9 @@ void GameWindow::game_destroy()
     al_destroy_bitmap(background);
 
     if (flappyBird) delete flappyBird;
+    if (startbuttom) delete startbuttom;
+    if (pausebuttom) delete pausebuttom;
+    if (okbuttom) delete okbuttom;
 }
 
 int GameWindow::game_update()
@@ -252,13 +257,13 @@ int GameWindow::process_event()
             //change_state = true;
 
             // TODO:
-            if(startbuttom != NULL){
+            if(startbuttom != NULL && state == MENU){
                 selectedStart = startbuttom->mouse_hover(mouse_x, mouse_y);
             }
-            if(pausebuttom != NULL){
+            if(pausebuttom != NULL && state == IN_GAME){
                 selectedPause = pausebuttom->mouse_hover(mouse_x, mouse_y);
             }
-            if(okbuttom != NULL){
+            if(okbuttom != NULL && state == GAME_OVER){
                 selectedOk = okbuttom->mouse_hover(mouse_x, mouse_y);
             }
             
@@ -293,24 +298,6 @@ int GameWindow::process_event()
     }
 
     if(change_state) {
-        switch(state) {
-            case MENU:
-                startbuttom = new StartButtom(window_width/2, window_height-200);
-                delete pausebuttom;
-                delete okbuttom;
-            case SCOREBOARD:
-                // PASS
-            case IN_GAME:
-                pausebuttom = new PauseButtom(100, 100);
-                delete startbuttom;
-
-            case GAME_OVER:
-                okbuttom = new OkButtom(window_width/2, window_height-200);
-                delete pausebuttom;
-            default:
-                state = state;
-                break;
-        }
         change_state = false;
     }
 
