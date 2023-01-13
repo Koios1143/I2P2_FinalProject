@@ -24,6 +24,7 @@
 #define field_width 600
 #define field_height 600
 
+#define PI 3.1415926
 
 #define NumOfGrid (field_width / grid_width) * (field_height / grid_height)
 

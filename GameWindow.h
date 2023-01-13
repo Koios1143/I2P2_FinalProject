@@ -9,6 +9,7 @@
 #include "OkButtom.h"
 #include "ResumeButtom.h"
 #include "Bird.h"
+#include "Pipe.h"
 
 #define GAME_INIT -1
 #define GAME_SETTING 0
@@ -99,6 +100,8 @@ private:
 
     bool redraw = false;
     bool mute = false;
+
+    std::vector<Pipe*> PIPEs;
 };
 
 extern GameWindow *FlappyBird;

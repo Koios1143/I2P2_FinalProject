@@ -24,6 +24,8 @@ void GameWindow::game_init()
     resumebuttom = new ResumeButtom(100, 100);
     okbuttom = new OkButtom(window_width/2, window_height-200);
 
+    PIPEs.clear();
+
     al_set_display_icon(display, icon);
     al_reserve_samples(3);
 
