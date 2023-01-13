@@ -1,5 +1,5 @@
-#ifndef BUTTOM_H_INCLUDE
-#define BUTTOM_H_INCLUDE
+#ifndef BUTTOM_H_INCLUDED
+#define BUTTOM_H_INCLUDED
 
 #include "Object.h"
 #include "global.h"

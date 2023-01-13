@@ -41,6 +41,7 @@ void Buttom::ToggleClicked(){
 
 bool Buttom::mouse_hover(int mouse_x, int mouse_y) {
     if (mouse_x <= rect->x + rect->w && mouse_x >= rect->x && mouse_y >= rect->y && mouse_y <= rect->y + rect->h) {
+        ToggleClicked();
         return true;
     }
     return false;

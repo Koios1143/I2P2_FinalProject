@@ -1,12 +1,12 @@
 #ifndef MAINWINDOW_H_INCLUDED
 #define MAINWINDOW_H_INCLUDED
 
-#include <allegro5/allegro_audio.h>
-#include <allegro5/allegro_acodec.h>
-#include <vector>
 #include <list>
 #include <time.h>
 #include "global.h"
+#include "StartButtom.h"
+#include "PauseButtom.h"
+#include "OkButtom.h"
 #include "Bird.h"
 
 #define GAME_INIT -1
@@ -26,7 +26,7 @@ const float FPS = 60;
 const int LevelNum = 4;
 
 // the state type
-enum State{ MENU = 0, GET_READY, IN_GAME, GAME_OVER };
+enum State{ MENU = 0, SCOREBOARD, IN_GAME, GAME_OVER };
 
 
 class GameWindow
@@ -77,12 +77,20 @@ private:
     ALLEGRO_SAMPLE_INSTANCE *passSound = NULL;
     ALLEGRO_SAMPLE_INSTANCE *hitSound = NULL;
 
+    // Buttoms
+    StartButtom *startbuttom = NULL;
+    PauseButtom *pausebuttom = NULL;
+    OkButtom *okbuttom = NULL;
+
     State state = IN_GAME;
 
     Bird *flappyBird;
     
     int mouse_x, mouse_y;
     bool change_state = false;
+    bool selectedStart = 0;
+    bool selectedOk = 0;
+    bool selectedPause = 0;
 
     bool redraw = false;
     bool mute = false;

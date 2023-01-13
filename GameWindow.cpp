@@ -1,6 +1,4 @@
 #include "GameWindow.h"
-#include "global.h"
-#include <iostream>
 
 #define WHITE al_map_rgb(255, 255, 255)
 #define BLACK al_map_rgb(0, 0, 0)
@@ -156,7 +154,6 @@ void GameWindow::game_reset()
     
     // stop timer
     al_stop_timer(timer);
-
 }
 
 void GameWindow::game_destroy()
@@ -246,8 +243,41 @@ int GameWindow::process_event()
     }
     else if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
         if(event.mouse.button == 1) {
-            change_state = true;
+            //change_state = true;
 
+            // TODO:
+            if(startbuttom != NULL){
+                selectedStart = startbuttom->mouse_hover(mouse_x, mouse_y);
+            }
+            if(pausebuttom != NULL){
+                selectedPause = pausebuttom->mouse_hover(mouse_x, mouse_y);
+            }
+            if(okbuttom != NULL){
+                selectedOk = okbuttom->mouse_hover(mouse_x, mouse_y);
+            }
+            
+            if(state == MENU){
+                if(selectedStart){
+                    state = IN_GAME;
+                    change_state = true;
+                }
+            }
+            else if(state == IN_GAME){
+                if(selectedPause){
+                    if(al_get_timer_started(timer)){
+                        al_stop_timer(timer);
+                    }
+                    else{
+                        al_start_timer(timer);
+                    }
+                }
+            }
+            else if(state == GAME_OVER){
+                if(selectedOk){
+                    state = MENU;
+                    change_state = true;
+                }
+            }
         }
     }
     else if(event.type == ALLEGRO_EVENT_MOUSE_AXES){
@@ -259,9 +289,18 @@ int GameWindow::process_event()
     if(change_state) {
         switch(state) {
             case MENU:
-            case GET_READY:
+                startbuttom = new StartButtom(window_width/2, window_height-200);
+                delete pausebuttom;
+                delete okbuttom;
+            case SCOREBOARD:
+                // PASS
             case IN_GAME:
+                pausebuttom = new PauseButtom(100, 100);
+                delete startbuttom;
+
             case GAME_OVER:
+                okbuttom = new OkButtom(window_width/2, window_height-200);
+                delete pausebuttom;
             default:
                 state = state;
                 break;
