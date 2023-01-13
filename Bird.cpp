@@ -1,7 +1,7 @@
 #include "Bird.h"
 
 // set counter frequency of drawing moving animation
-const int draw_frequency = 10;
+const int draw_frequency = 5;
 
 float Bird::volume = 1.0;
 
@@ -54,7 +54,7 @@ void Bird::Load_move()
     }
 
     rect->x = window_width / 4;
-    rect->y = window_height / 2;
+    rect->y = window_height / 3;
     rect->w = al_get_bitmap_width(flyImg[0]);
     rect->h = al_get_bitmap_height(flyImg[0]);
 }

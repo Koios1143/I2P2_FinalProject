@@ -18,7 +18,7 @@
 #define grid_width 40
 #define grid_height 40
 
-#define window_width 720
+#define window_width 990
 #define window_height 990
 #define field_width 600
 #define field_height 600

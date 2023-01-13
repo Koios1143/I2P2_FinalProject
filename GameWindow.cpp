@@ -137,7 +137,7 @@ void GameWindow::draw_running_map()
     al_draw_scaled_bitmap(
         background,
         0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background),
-        0, 0, window_width, window_height, 0
+        0, 0, window_width + 10, window_height + 10, 0
     );
 
     if (state == IN_GAME) {
