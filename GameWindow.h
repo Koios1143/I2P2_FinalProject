@@ -10,6 +10,7 @@
 #include "StartButtom.h"
 #include "PauseButtom.h"
 #include "OkButtom.h"
+#include "Bird.h"
 
 #define GAME_INIT -1
 #define GAME_SETTING 0
@@ -78,7 +79,6 @@ private:
     ALLEGRO_SAMPLE *sample = NULL;
     ALLEGRO_SAMPLE_INSTANCE *passSound = NULL;
     ALLEGRO_SAMPLE_INSTANCE *hitSound = NULL;
-    ALLEGRO_SAMPLE_INSTANCE *wingSound = NULL;
 
     // Buttoms
     StartButtom *startbuttom = NULL;
@@ -86,6 +86,9 @@ private:
     OkButtom *okbuttom = NULL;
 
     State state = MENU;
+    State state = IN_GAME;
+
+    Bird *flappyBird;
     
     int mouse_x, mouse_y;
     bool change_state = false;

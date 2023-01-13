@@ -31,6 +31,7 @@ void GameWindow::game_init()
 
     //level = new LEVEL(1);
     //menu = new Menu();
+    std::cout << "Game Initialized!\n";
 }
 
 bool GameWindow::mouse_hover(int startx, int starty, int width, int height)
@@ -104,13 +105,16 @@ GameWindow::GameWindow()
 void GameWindow::game_begin()
 {
     //printf(">>> Start Level[%d]\n", level->getLevel());
-    draw_running_map();
+    // draw_running_map();
 
     //al_play_sample_instance(startSound);
     //while(al_get_sample_instance_playing(startSound));
     //al_play_sample_instance(backgroundSound);
 
     al_start_timer(timer);
+    flappyBird = new Bird;
+    flappyBird->Load_move();
+    std::cout << "Game Beginning...\n";
 }
 
 int GameWindow::game_run()
@@ -135,6 +139,13 @@ void GameWindow::draw_running_map()
         0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background),
         0, 0, window_width, window_height, 0
     );
+
+    if (state == IN_GAME) {
+        flappyBird->Draw();
+    }
+
+    
+
     al_flip_display();
 }
 
@@ -161,10 +172,20 @@ void GameWindow::game_destroy()
 
     al_destroy_bitmap(icon);
     al_destroy_bitmap(background);
+
+    if (flappyBird) delete flappyBird;
 }
 
 int GameWindow::game_update()
 {
+    bool isreachground = false;
+    if (state == IN_GAME) {
+        isreachground = flappyBird->Move();
+        if (isreachground) {
+            change_state = true;
+        }
+    }
+
     return GAME_CONTINUE;
 }
 
