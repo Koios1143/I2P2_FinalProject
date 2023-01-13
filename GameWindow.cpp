@@ -138,11 +138,16 @@ void GameWindow::draw_running_map()
         0, 0, window_width, window_height, 0
     );
 
-    if (state == IN_GAME) {
-        flappyBird->Draw();
+    if(state == MENU){
+        startbuttom->Draw();
     }
-
-    
+    else if(state == IN_GAME) {
+        flappyBird->Draw();
+        pausebuttom->Draw();
+    }
+    else if(state == GAME_OVER){
+        okbuttom->Draw();
+    }
 
     al_flip_display();
 }
