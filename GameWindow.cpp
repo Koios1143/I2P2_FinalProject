@@ -157,7 +157,12 @@ void GameWindow::draw_running_map()
         flappyBird->Draw();
     }
     else if(state == GAME_OVER){
-        
+        // Draw pipes
+        for(auto pipe: PIPEs){
+            pipe->Draw();
+        }
+
+        flappyBird->Draw();
     }
 
     al_draw_scaled_bitmap(
