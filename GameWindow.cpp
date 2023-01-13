@@ -15,7 +15,7 @@ void GameWindow::game_init()
     char buffer[50];
 
     icon = al_load_bitmap("./img/Flappy_Bird_icon.png");
-    background = al_load_bitmap("./img/background/background_day.png");
+    background = al_load_bitmap("./img/background/background_night.png");
     ground = al_load_bitmap("./img/ground.png");
 
     // Initialize Buttoms
@@ -139,7 +139,13 @@ void GameWindow::draw_running_map()
     al_draw_scaled_bitmap(
         background,
         0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background),
-        0, 0, window_width, window_height, 0
+        0, 0, window_width + 10, window_height + 10, 0
+    );
+
+    al_draw_scaled_bitmap(
+        ground, 0, 0, 
+        al_get_bitmap_width(ground), al_get_bitmap_height(ground),
+        0, ground_height, window_width + 10, 200, 0
     );
 
     if(state == MENU){
@@ -194,6 +200,7 @@ int GameWindow::game_update()
     if (state == IN_GAME) {
         isreachground = flappyBird->Move();
         if (isreachground) {
+            state = GAME_OVER;
             change_state = true;
         }
     }
@@ -243,7 +250,7 @@ int GameWindow::process_event()
                     draw_running_map();
                     al_stop_timer(timer);
                 }
-                else {
+                else if (state == IN_GAME) {
                     al_start_timer(timer);
                     pause = false;
                 }
@@ -259,14 +266,14 @@ int GameWindow::process_event()
     }
     else if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
         if(event.mouse.button == 1) {
-            //change_state = true;
-
-            // TODO:
             if(startbuttom != NULL && state == MENU){
                 selectedStart = startbuttom->mouse_hover(mouse_x, mouse_y);
             }
             if(pausebuttom != NULL && state == IN_GAME){
                 selectedPause = pausebuttom->mouse_hover(mouse_x, mouse_y);
+                if (!selectedPause) {
+                    flappyBird->ClickDetected();
+                }
             }
             if(resumebuttom != NULL && state == IN_GAME){
                 selectedResume = resumebuttom->mouse_hover(mouse_x, mouse_y);

@@ -1,9 +1,10 @@
 #include "Bird.h"
+#include "GameWindow.h"
 
 // set counter frequency of drawing moving animation
-const int draw_frequency = 10;
+const int draw_frequency = 5;
 
-float Bird::volume = 1.0;
+float Bird::volume = 2.0;
 
 Bird::Bird()
 {
@@ -16,6 +17,9 @@ Bird::Bird()
     sample = al_load_sample("./sound/sfx_wing.wav");
     wingSound = al_create_sample_instance(sample);
 
+    al_set_sample_instance_playmode(wingSound, ALLEGRO_PLAYMODE_ONCE);
+    al_attach_sample_instance_to_mixer(wingSound, al_get_default_mixer());
+    al_set_sample_instance_gain(wingSound, Bird::volume);
 }
 
 Bird::~Bird()
@@ -54,7 +58,7 @@ void Bird::Load_move()
     }
 
     rect->x = window_width / 4;
-    rect->y = window_height / 2;
+    rect->y = window_height / 3;
     rect->w = al_get_bitmap_width(flyImg[0]);
     rect->h = al_get_bitmap_height(flyImg[0]);
 }
@@ -87,5 +91,25 @@ bool Bird::Move()
         sprite_pos = (sprite_pos + 1) % img_count;
     }
 
+    if (!isReachGround) rect->y += velocity;
+    if (rect->y + rect->h > ground_height) isReachGround = true;
+
+    if (velocity < critical_velocity) velocity += acceleration;
+
+    if (rect->y >= ground_height) {
+        return true;
+    }
+
     return false;
+}
+
+void Bird::ClickDetected()
+{
+    if (al_get_timer_started(FlappyBird->GetTimer())) {
+        al_set_sample_instance_position(wingSound, 0);
+        al_play_sample_instance(wingSound);
+    }
+    
+    isReachGround = false;
+    velocity = click_velocity;
 }

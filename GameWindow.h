@@ -55,6 +55,7 @@ public:
     // detect if mouse hovers over a rectangle
     bool mouse_hover(int, int, int, int);
 
+    inline ALLEGRO_TIMER* &GetTimer() { return this->timer; };
     
 
 public:
@@ -100,5 +101,6 @@ private:
     bool mute = false;
 };
 
+extern GameWindow *FlappyBird;
 
 #endif // MAINWINDOW_H_INCLUDED
