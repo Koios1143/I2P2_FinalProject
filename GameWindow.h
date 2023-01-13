@@ -1,9 +1,6 @@
 #ifndef MAINWINDOW_H_INCLUDED
 #define MAINWINDOW_H_INCLUDED
 
-#include <allegro5/allegro_audio.h>
-#include <allegro5/allegro_acodec.h>
-#include <vector>
 #include <list>
 #include <time.h>
 #include "global.h"
@@ -86,7 +83,6 @@ private:
     OkButtom *okbuttom = NULL;
 
     State state = MENU;
-    State state = IN_GAME;
 
     Bird *flappyBird;
     

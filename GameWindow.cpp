@@ -1,6 +1,4 @@
 #include "GameWindow.h"
-#include "global.h"
-#include <iostream>
 
 #define WHITE al_map_rgb(255, 255, 255)
 #define BLACK al_map_rgb(0, 0, 0)
