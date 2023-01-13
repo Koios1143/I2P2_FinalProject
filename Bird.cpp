@@ -1,5 +1,6 @@
 #include "Bird.h"
 #include "GameWindow.h"
+#define max(a, b) (((a) > (b) ? (a) : (b)))
 
 // set counter frequency of drawing moving animation
 const int draw_frequency = 2;
@@ -93,7 +94,11 @@ bool Bird::Move()
         sprite_pos = (sprite_pos + 1) % img_count;
     }
 
-    if (!isReachGround) rect->y += velocity;
+    if (!isReachGround){
+        rect->y += velocity;
+        // Restrict Height
+        rect->y = max(rect->y, BIRD_MAX_HEIGHT);
+    }
     if (rect->y + rect->h > ground_height) isReachGround = true;
 
     if (velocity < critical_velocity) velocity += acceleration;

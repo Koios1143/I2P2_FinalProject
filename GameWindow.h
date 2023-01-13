@@ -65,6 +65,8 @@ public:
 
     void groundDraw();
 
+    void generate_new_pipes();
+
     inline ALLEGRO_TIMER* &GetTimer() { return this->timer; };
     
 
@@ -98,12 +100,16 @@ private:
     // Titles
     MenuTitle *menutitle = nullptr;
 
+    // Game state
     State state = MENU;
+    int stage = 0;  // record current stage number.
 
     Bird *flappyBird;
     
     int mouse_x, mouse_y;
     bool change_state = false;
+
+    // Buttoms selected
     bool selectedStart = 0;
     bool selectedOk = 0;
     bool selectedPause = false;
@@ -113,6 +119,7 @@ private:
     bool redraw = false;
     bool mute = false;
 
+    // For pipes to know when to update
     int FPS_count;
 
     // the upper left corner of ground

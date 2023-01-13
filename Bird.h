@@ -26,6 +26,9 @@ class Bird: public Object
     double acceleration = gravity;
 
     static float volume;
+
+    // Height limit
+    const int BIRD_MAX_HEIGHT = -60;
 public:
     Bird();
     ~Bird();
@@ -37,8 +40,5 @@ public:
     void ClickDetected();
 
 };
-
-
-
 
 #endif

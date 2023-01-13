@@ -164,11 +164,20 @@ void GameWindow::game_destroy()
     al_destroy_bitmap(icon);
     al_destroy_bitmap(background);
 
+    // Delete Bird
     if (flappyBird) delete flappyBird;
+    // Delete Buttoms
     if (startbuttom) delete startbuttom;
     if (pausebuttom) delete pausebuttom;
+    if (resumebuttom) delete resumebuttom;
     if (okbuttom) delete okbuttom;
+    // Delete Title
     if (menutitle) delete menutitle;
+    // Delete Pipes
+    while(!PIPEs.empty()){
+        delete PIPEs.back();
+        PIPEs.pop_back();
+    }
 }
 
 void GameWindow::show_err_msg(int msg)
@@ -192,10 +201,11 @@ int GameWindow::game_update()
             change_state = true;
         }
 
-        // Update every pipes
+        // Update every pipes, x = x - PIPE_dx
         for(int i=0 ; i<PIPEs.size() ; i++){
             Pipe* pipe = PIPEs[i];
             if(pipe->getX() < -PIPE_W){
+                delete pipe;
                 PIPEs.erase(PIPEs.begin() + i);
                 i--;
             }
@@ -220,28 +230,22 @@ void GameWindow::draw_running_map()
         0, 0, window_width + 10, window_height + 10, 0
     );
 
-    if(state == MENU){
-        
-    }
-    else if(state == IN_GAME) {
-        // Draw pipes
+    // Draw Pipes
+    if(state == IN_GAME || state == GAME_OVER) {
         for(auto pipe: PIPEs){
             pipe->Draw();
         }
-
-        flappyBird->Draw();
-    }
-    else if(state == GAME_OVER){
-        // Draw pipes
-        for(auto pipe: PIPEs){
-            pipe->Draw();
-        }
-
-        flappyBird->Draw();
     }
 
+    // Draw Ground
     groundDraw();
 
+    // Draw Bird
+    if(state == IN_GAME || state == GAME_OVER) {
+        flappyBird->Draw();
+    }
+
+    // Draw Buttoms and Titles
     if(state == MENU){
         startbuttom->Draw();
         menutitle->Draw();
@@ -276,13 +280,22 @@ void GameWindow::groundDraw()
     );
 }
 
+void GameWindow::generate_new_pipes(){
+    if(stage == 0){
+        // stage 0: Random y position, fixed gap length
+        int offset = rand() % (PIPE_RAND_MAX - PIPE_RAND_MIN + 1) + PIPE_RAND_MIN;
+        double upper_radian = PI;
+        PIPEs.emplace_back(new Pipe(window_width + 100, - 7 * PIPE_H / 8 + offset, upper_radian));
+        PIPEs.emplace_back(new Pipe(window_width + 100, - 7 * PIPE_H / 8 + offset + GAP_LEN + PIPE_H, upper_radian - PI));
+    }
+    else{
+
+    }
+}
+
 int GameWindow::process_event()
 {
     int instruction = GAME_CONTINUE;
-
-    // offset for pause window
-    // int offsetX = field_width/2 - 200;
-    // int offsetY = field_height/2 - 200;
 
     al_wait_for_event(event_queue, &event);
     redraw = false;
@@ -290,11 +303,9 @@ int GameWindow::process_event()
     if(event.type == ALLEGRO_EVENT_TIMER) {
         if(event.timer.source == timer) {
             redraw = true;
-            if(FPS_count + 1 >= (int)FPS){
+            if(FPS_count + 1 >= (int)FPS && state == IN_GAME){
+                generate_new_pipes();
                 FPS_count = 0;
-                int offset = rand() % (PIPE_RAND_MAX - PIPE_RAND_MIN + 1) + PIPE_RAND_MIN;
-                PIPEs.emplace_back(new Pipe(window_width + 100, - 7 * PIPE_H / 8 + offset, PI));
-                PIPEs.emplace_back(new Pipe(window_width + 100, - 7 * PIPE_H / 8 + offset + GAP_LEN + PIPE_H, 0));
             }
             else{
                 FPS_count += 1;
@@ -379,6 +390,8 @@ int GameWindow::process_event()
 
     }
 
+    // Update Game state
+    // MENU -> IN_GAME -> GAME_OVER
     if(change_state) {
         if (state == MENU) {
             state = IN_GAME;
@@ -389,6 +402,7 @@ int GameWindow::process_event()
             state = GAME_OVER;
         } else if (state == GAME_OVER) {
             state = MENU;
+            stage = 0;
         }
         change_state = false;
     }
