@@ -9,6 +9,7 @@ Buttom::Buttom(int pos_x, int pos_y, int width, int height){
     buttom = al_create_sample_instance(sample);
     al_set_sample_instance_gain(buttom, Buttom::volume);
     al_set_sample_instance_playmode(buttom, ALLEGRO_PLAYMODE_ONCE);
+    
 }
 
 Buttom::~Buttom(){
@@ -35,6 +36,7 @@ void Buttom::ToggleClicked(){
     isClicked = !isClicked;
 
     // Play Clicked sound effect
+    al_set_sample_instance_position(buttom, 0);
     al_attach_sample_instance_to_mixer(buttom, al_get_default_mixer());
     al_play_sample_instance(buttom);
 }

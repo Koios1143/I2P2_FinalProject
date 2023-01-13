@@ -2,7 +2,7 @@
 #include "GameWindow.h"
 
 // set counter frequency of drawing moving animation
-const int draw_frequency = 5;
+const int draw_frequency = 2;
 
 float Bird::volume = 2.0;
 

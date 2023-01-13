@@ -10,6 +10,7 @@
 #include "ResumeButtom.h"
 #include "Bird.h"
 #include "Pipe.h"
+#include "MenuTitle.h"
 
 #define GAME_INIT -1
 #define GAME_SETTING 0
@@ -85,6 +86,9 @@ private:
     PauseButtom *pausebuttom = NULL;
     OkButtom *okbuttom = NULL;
     ResumeButtom *resumebuttom = NULL;
+
+    // Titles
+    MenuTitle *menutitle = nullptr;
 
     State state = MENU;
 

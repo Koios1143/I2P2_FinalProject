@@ -26,6 +26,8 @@ void GameWindow::game_init()
 
     FPS_count = 0;
     PIPEs.clear();
+    // Initialize Titles
+    menutitle = new MenuTitle(window_width/2, upper_bound);
 
     al_set_display_icon(display, icon);
     al_reserve_samples(3);
@@ -163,11 +165,12 @@ void GameWindow::draw_running_map()
     al_draw_scaled_bitmap(
         ground, 0, 0, 
         al_get_bitmap_width(ground), al_get_bitmap_height(ground),
-        0, ground_height, window_width + 10, 200, 0
+        0, ground_height, window_width + 10, window_height - ground_height, 0
     );
 
     if(state == MENU){
         startbuttom->Draw();
+        menutitle->Draw();
     }
     else if(state == IN_GAME) {
         if(pause) resumebuttom->Draw();
@@ -208,6 +211,7 @@ void GameWindow::game_destroy()
     if (startbuttom) delete startbuttom;
     if (pausebuttom) delete pausebuttom;
     if (okbuttom) delete okbuttom;
+    if (menutitle) delete menutitle;
 }
 
 int GameWindow::game_update()
@@ -230,6 +234,8 @@ int GameWindow::game_update()
                 pipe->update_pos(pipe->getX() - PIPE_dx, pipe->getY());
             }
         }
+    } else if (state == MENU) {
+        menutitle->Move();
     }
 
     return GAME_CONTINUE;
