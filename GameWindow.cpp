@@ -17,8 +17,11 @@ void GameWindow::game_init()
     icon = al_load_bitmap("./img/Flappy_Bird_icon.png");
     background = al_load_bitmap("./img/background/background_day.png");
     ground = al_load_bitmap("./img/ground.png");
+
+    // Initialize Buttoms
     startbuttom = new StartButtom(window_width/2, window_height-200);
     pausebuttom = new PauseButtom(100, 100);
+    resumebuttom = new ResumeButtom(100, 100);
     okbuttom = new OkButtom(window_width/2, window_height-200);
 
     al_set_display_icon(display, icon);
@@ -131,8 +134,6 @@ int GameWindow::game_run()
 
 void GameWindow::draw_running_map()
 {
-    // unsigned int i, j;
-
     al_clear_to_color(al_map_rgb(100, 100, 100));
     al_draw_bitmap(background, 0, 0, 0);
     al_draw_scaled_bitmap(
@@ -145,7 +146,9 @@ void GameWindow::draw_running_map()
         startbuttom->Draw();
     }
     else if(state == IN_GAME) {
-        pausebuttom->Draw();
+        if(pause) resumebuttom->Draw();
+        else pausebuttom->Draw();
+
         flappyBird->Draw();
     }
     else if(state == GAME_OVER){
@@ -223,7 +226,6 @@ int GameWindow::process_event()
     if(event.type == ALLEGRO_EVENT_TIMER) {
         if(event.timer.source == timer) {
             redraw = true;
-
         }
         else {
             
@@ -237,10 +239,13 @@ int GameWindow::process_event()
 
             case ALLEGRO_KEY_P:
                 if(al_get_timer_started(timer)) {
+                    pause = true;
+                    draw_running_map();
                     al_stop_timer(timer);
                 }
                 else {
                     al_start_timer(timer);
+                    pause = false;
                 }
                 break;
             case ALLEGRO_KEY_M:
@@ -263,6 +268,9 @@ int GameWindow::process_event()
             if(pausebuttom != NULL && state == IN_GAME){
                 selectedPause = pausebuttom->mouse_hover(mouse_x, mouse_y);
             }
+            if(resumebuttom != NULL && state == IN_GAME){
+                selectedResume = resumebuttom->mouse_hover(mouse_x, mouse_y);
+            }
             if(okbuttom != NULL && state == GAME_OVER){
                 selectedOk = okbuttom->mouse_hover(mouse_x, mouse_y);
             }
@@ -276,10 +284,13 @@ int GameWindow::process_event()
             else if(state == IN_GAME){
                 if(selectedPause){
                     if(al_get_timer_started(timer)){
+                        pause = true;
+                        draw_running_map();
                         al_stop_timer(timer);
                     }
                     else{
                         al_start_timer(timer);
+                        pause = false;
                     }
                 }
             }
