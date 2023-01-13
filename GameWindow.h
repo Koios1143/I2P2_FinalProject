@@ -7,6 +7,9 @@
 #include <list>
 #include <time.h>
 #include "global.h"
+#include "StartButtom.h"
+#include "PauseButtom.h"
+#include "OkButtom.h"
 
 #define GAME_INIT -1
 #define GAME_SETTING 0
@@ -25,7 +28,7 @@ const float FPS = 60;
 const int LevelNum = 4;
 
 // the state type
-enum State{ MENU = 0, GET_READY, IN_GAME, GAME_OVER };
+enum State{ MENU = 0, SCOREBOARD, IN_GAME, GAME_OVER };
 
 
 class GameWindow
@@ -77,10 +80,18 @@ private:
     ALLEGRO_SAMPLE_INSTANCE *hitSound = NULL;
     ALLEGRO_SAMPLE_INSTANCE *wingSound = NULL;
 
+    // Buttoms
+    StartButtom *startbuttom = NULL;
+    PauseButtom *pausebuttom = NULL;
+    OkButtom *okbuttom = NULL;
+
     State state = MENU;
     
     int mouse_x, mouse_y;
     bool change_state = false;
+    bool selectedStart = 0;
+    bool selectedOk = 0;
+    bool selectedPause = 0;
 
     bool redraw = false;
     bool mute = false;

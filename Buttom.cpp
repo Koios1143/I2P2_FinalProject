@@ -5,7 +5,7 @@ float Buttom::volume = 1.0;
 Buttom::Buttom(int pos_x, int pos_y, int width, int height){
     this->rect = new Rect(pos_x, pos_y, width, height);
 
-    sample = al_load_sample("click.wav");
+    sample = al_load_sample("./sound/click.wav");
     buttom = al_create_sample_instance(sample);
 }
 
@@ -41,6 +41,7 @@ void Buttom::ToggleClicked(){
 
 bool Buttom::mouse_hover(int mouse_x, int mouse_y) {
     if (mouse_x <= rect->x + rect->w && mouse_x >= rect->x && mouse_y >= rect->y && mouse_y <= rect->y + rect->h) {
+        ToggleClicked();
         return true;
     }
     return false;
