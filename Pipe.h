@@ -6,9 +6,9 @@
 
 const int PIPE_W = 101;
 const int PIPE_H = 642;
-const int GAP_LEN = 200;
-const int PIPE_RAND_MIN = 80;
-const int PIPE_RAND_MAX = 500;
+const int GAP_LEN = 230;
+const int PIPE_RAND_MIN = 50;
+const int PIPE_RAND_MAX = 470;
 
 const int PIPE_dx = 10;
 

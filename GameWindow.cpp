@@ -27,6 +27,8 @@ void GameWindow::game_init()
     // Initialize Titles
     menutitle = new MenuTitle(window_width/2, upper_bound);
 
+    al_set_window_position(display, 250, 0);
+    al_set_window_title(display, "Flappy Bird");
     al_set_display_icon(display, icon);
     al_reserve_samples(3);
 
@@ -135,6 +137,79 @@ int GameWindow::game_run()
     return error;
 }
 
+
+
+void GameWindow::game_reset()
+{
+    mute = false;
+    redraw = false;
+    ground_pos_x = 0;
+    
+    // stop timer
+    al_stop_timer(timer);
+}
+
+void GameWindow::game_destroy()
+{
+    game_reset();
+
+    al_destroy_display(display);
+    al_destroy_event_queue(event_queue);
+    al_destroy_font(font);
+    al_destroy_font(Medium_font);
+    al_destroy_font(Large_font);
+
+    al_destroy_timer(timer);
+
+    al_destroy_bitmap(icon);
+    al_destroy_bitmap(background);
+
+    if (flappyBird) delete flappyBird;
+    if (startbuttom) delete startbuttom;
+    if (pausebuttom) delete pausebuttom;
+    if (okbuttom) delete okbuttom;
+    if (menutitle) delete menutitle;
+}
+
+void GameWindow::show_err_msg(int msg)
+{
+    if(msg == GAME_TERMINATE)
+        fprintf(stderr, "Game Terminated...");
+    else
+        fprintf(stderr, "unexpected msg: %d", msg);
+
+    game_destroy();
+    exit(9);
+}
+
+int GameWindow::game_update()
+{
+    bool isreachground = false;
+    update_ground_pos();
+    if (state == IN_GAME) {
+        isreachground = flappyBird->Move();
+        if (isreachground) {
+            change_state = true;
+        }
+
+        // Update every pipes
+        for(int i=0 ; i<PIPEs.size() ; i++){
+            Pipe* pipe = PIPEs[i];
+            if(pipe->getX() < -PIPE_W){
+                PIPEs.erase(PIPEs.begin() + i);
+                i--;
+            }
+            else{
+                pipe->update_pos(pipe->getX() - PIPE_dx, pipe->getY());
+            }
+        }
+    } else if (state == MENU) {
+        menutitle->Move();
+    }
+
+    return GAME_CONTINUE;
+}
+
 void GameWindow::draw_running_map()
 {
     al_clear_to_color(al_map_rgb(100, 100, 100));
@@ -165,11 +240,7 @@ void GameWindow::draw_running_map()
         flappyBird->Draw();
     }
 
-    al_draw_scaled_bitmap(
-        ground, 0, 0, 
-        al_get_bitmap_width(ground), al_get_bitmap_height(ground),
-        0, ground_height, window_width + 10, window_height - ground_height, 0
-    );
+    groundDraw();
 
     if(state == MENU){
         startbuttom->Draw();
@@ -186,73 +257,23 @@ void GameWindow::draw_running_map()
     al_flip_display();
 }
 
-void GameWindow::game_reset()
+void GameWindow::groundDraw()
 {
-    mute = false;
-    redraw = false;
-    
-    // stop timer
-    al_stop_timer(timer);
-}
+    // Draw the 1st ground img
+    al_draw_scaled_bitmap(
+        ground, 0, 0, 
+        al_get_bitmap_width(ground), al_get_bitmap_height(ground),
+        ground_pos_x, ground_height, window_width, window_height - ground_height, 0
+    );
 
-void GameWindow::game_destroy()
-{
-    game_reset();
-
-    al_destroy_display(display);
-    al_destroy_event_queue(event_queue);
-    al_destroy_font(font);
-    al_destroy_font(Medium_font);
-    al_destroy_font(Large_font);
-
-    al_destroy_timer(timer);
-
-    al_destroy_bitmap(icon);
-    al_destroy_bitmap(background);
-
-    if (flappyBird) delete flappyBird;
-    if (startbuttom) delete startbuttom;
-    if (pausebuttom) delete pausebuttom;
-    if (okbuttom) delete okbuttom;
-    if (menutitle) delete menutitle;
-}
-
-int GameWindow::game_update()
-{
-    bool isreachground = false;
-    if (state == IN_GAME) {
-        isreachground = flappyBird->Move();
-        if (isreachground) {
-            change_state = true;
-        }
-
-        // Update every pipes
-        for(int i=0 ; i<PIPEs.size() ; i++){
-            Pipe* pipe = PIPEs[i];
-            if(pipe->getX() < -PIPE_W){
-                PIPEs.erase(PIPEs.begin() + i);
-                i--;
-            }
-            else{
-                pipe->update_pos(pipe->getX() - PIPE_dx, pipe->getY());
-            }
-        }
-    } else if (state == MENU) {
-        menutitle->Move();
-    }
-
-    return GAME_CONTINUE;
-}
-
-void GameWindow::show_err_msg(int msg)
-{
-    if(msg == GAME_TERMINATE)
-        fprintf(stderr, "Game Terminated...");
-    else
-        fprintf(stderr, "unexpected msg: %d", msg);
-
-    game_destroy();
-    exit(9);
+    // Draw the 2nd gorund img
+    int second_ground_pos = ground_pos_x - window_width;
+    if (second_ground_pos <= -window_width) second_ground_pos += 2 * window_width;
+    al_draw_scaled_bitmap(
+        ground, 0, 0, 
+        al_get_bitmap_width(ground), al_get_bitmap_height(ground),
+        second_ground_pos, ground_height, window_width, window_height - ground_height, 0
+    );
 }
 
 int GameWindow::process_event()

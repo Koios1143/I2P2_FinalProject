@@ -57,6 +57,14 @@ public:
     // detect if mouse hovers over a rectangle
     bool mouse_hover(int, int, int, int);
 
+    // update the position of the ground (move the ground)
+    void update_ground_pos() {
+        ground_pos_x -= PIPE_dx;
+        if (ground_pos_x <= -window_width) ground_pos_x = window_width;
+    }
+
+    void groundDraw();
+
     inline ALLEGRO_TIMER* &GetTimer() { return this->timer; };
     
 
@@ -106,6 +114,9 @@ private:
     bool mute = false;
 
     int FPS_count;
+
+    // the upper left corner of ground
+    int ground_pos_x;
     std::vector<Pipe*> PIPEs;
 };
 
