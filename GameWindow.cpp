@@ -185,7 +185,7 @@ void GameWindow::show_err_msg(int msg)
 int GameWindow::game_update()
 {
     bool isreachground = false;
-    update_ground_pos();
+    if (state != GAME_OVER) update_ground_pos();
     if (state == IN_GAME) {
         isreachground = flappyBird->Move();
         if (isreachground) {
