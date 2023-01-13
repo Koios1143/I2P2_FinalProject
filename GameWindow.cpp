@@ -17,6 +17,7 @@ void GameWindow::game_init()
     icon = al_load_bitmap("./img/Flappy_Bird_icon.png");
     background = al_load_bitmap("./img/background/background_day.png");
     ground = al_load_bitmap("./img/ground.png");
+    startbuttom = new StartButtom(window_width/2, window_height-200);
 
     al_set_display_icon(display, icon);
     al_reserve_samples(3);
