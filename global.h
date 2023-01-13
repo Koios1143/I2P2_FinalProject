@@ -20,6 +20,7 @@
 
 #define window_width 990
 #define window_height 990
+#define ground_height (window_height - 200)
 #define field_width 600
 #define field_height 600
 

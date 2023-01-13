@@ -141,6 +141,12 @@ void GameWindow::draw_running_map()
         0, 0, window_width + 10, window_height + 10, 0
     );
 
+    al_draw_scaled_bitmap(
+        ground, 0, 0, 
+        al_get_bitmap_width(ground), al_get_bitmap_height(ground),
+        0, ground_height, window_width + 10, 200, 0
+    );
+
     if(state == MENU){
         startbuttom->Draw();
     }
@@ -236,6 +242,7 @@ int GameWindow::process_event()
         switch(event.keyboard.keycode) {
 
             case ALLEGRO_KEY_P:
+                pausebuttom->ToggleClicked();
                 if(al_get_timer_started(timer)) {
                     al_stop_timer(timer);
                 }
@@ -262,6 +269,9 @@ int GameWindow::process_event()
             }
             if(pausebuttom != NULL && state == IN_GAME){
                 selectedPause = pausebuttom->mouse_hover(mouse_x, mouse_y);
+                if (!selectedPause) {
+                    flappyBird->ClickDetected();
+                }
             }
             if(okbuttom != NULL && state == GAME_OVER){
                 selectedOk = okbuttom->mouse_hover(mouse_x, mouse_y);

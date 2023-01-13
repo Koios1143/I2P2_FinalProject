@@ -82,7 +82,7 @@ private:
     PauseButtom *pausebuttom = NULL;
     OkButtom *okbuttom = NULL;
 
-    State state = IN_GAME;
+    State state = MENU;
 
     Bird *flappyBird;
     

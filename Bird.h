@@ -2,6 +2,8 @@
 #define BIRD_H_INCLUDED
 #include "Object.h"
 #include "global.h"
+#define click_velocity -5
+#define gravity 0.3
 
 class Bird: public Object
 {
@@ -17,6 +19,10 @@ class Bird: public Object
 
     // check the gameover condition
     bool ishit = false;
+    bool isReachGround = false;
+
+    double velocity = 0;
+    double acceleration = gravity;
 
     static float volume;
 public:
@@ -26,6 +32,8 @@ public:
     void Draw();
     bool Move();
     void Reset();
+
+    void ClickDetected();
 
 };
 

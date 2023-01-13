@@ -20,7 +20,7 @@ Buttom::~Buttom(){
 void Buttom::Draw(){
     al_draw_scaled_bitmap(
         buttom_img,
-        this->getX(), this->getY(),
+        0, 0,
         al_get_bitmap_width(buttom_img),
         al_get_bitmap_height(buttom_img),
         this->getX(), this->getY(),

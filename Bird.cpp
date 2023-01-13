@@ -87,5 +87,20 @@ bool Bird::Move()
         sprite_pos = (sprite_pos + 1) % img_count;
     }
 
+    if (!isReachGround) rect->y += velocity;
+    if (rect->y + rect->h > ground_height) isReachGround = true;
+    
+    velocity += acceleration;
+
+    if (rect->y >= ground_height) {
+        return true;
+    }
+
     return false;
+}
+
+void Bird::ClickDetected()
+{
+    isReachGround = false;
+    velocity = click_velocity;
 }
