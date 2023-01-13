@@ -197,7 +197,6 @@ int GameWindow::game_update()
     if (state == IN_GAME) {
         isreachground = flappyBird->Move();
         if (isreachground) {
-            state = GAME_OVER;
             change_state = true;
         }
     }
@@ -276,7 +275,6 @@ int GameWindow::process_event()
             
             if(state == MENU){
                 if(selectedStart){
-                    state = IN_GAME;
                     change_state = true;
                 }
             }
@@ -292,7 +290,6 @@ int GameWindow::process_event()
             }
             else if(state == GAME_OVER){
                 if(selectedOk){
-                    state = MENU;
                     change_state = true;
                 }
             }
@@ -305,6 +302,14 @@ int GameWindow::process_event()
     }
 
     if(change_state) {
+        if (state == MENU) {
+            state = IN_GAME;
+            flappyBird->Reset();
+        } else if (state == IN_GAME) {
+            state = GAME_OVER;
+        } else if (state == GAME_OVER) {
+            state = MENU;
+        }
         change_state = false;
     }
 
