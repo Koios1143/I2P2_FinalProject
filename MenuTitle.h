@@ -17,7 +17,7 @@ public:
         this->rect->w = al_get_bitmap_width(title_img);
         this->rect->h = al_get_bitmap_height(title_img);
         this->rect->x -= this->rect->w / 2;
-        this->rect->y -= this->rect->h / 2;
+        //this->rect->y -= this->rect->h / 2;
     }
     void Move() 
     {
