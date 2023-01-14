@@ -210,7 +210,7 @@ int GameWindow::game_update()
                 i--;
             }
             else{
-                pipe->update_pos(pipe->getX() - PIPE_dx, pipe->getY());
+                pipe->update_pos(-PIPE_dx, 0);
             }
         }
     } else if (state == MENU) {
@@ -283,6 +283,7 @@ void GameWindow::groundDraw()
 void GameWindow::generate_new_pipes(){
     if(stage == 0){
         // stage 0: Random y position, fixed gap length
+        if(FPS_count + 1 != (int)FPS) return;
         int offset = rand() % (PIPE_RAND_MAX - PIPE_RAND_MIN + 1) + PIPE_RAND_MIN;
         double upper_radian = PI;
         PIPEs.emplace_back(new Pipe(window_width + 100, - 7 * PIPE_H / 8 + offset, upper_radian));
@@ -303,13 +304,8 @@ int GameWindow::process_event()
     if(event.type == ALLEGRO_EVENT_TIMER) {
         if(event.timer.source == timer) {
             redraw = true;
-            if(FPS_count + 1 >= (int)FPS && state == IN_GAME){
-                generate_new_pipes();
-                FPS_count = 0;
-            }
-            else{
-                FPS_count += 1;
-            }
+            generate_new_pipes();
+            FPS_count = (FPS_count + 1 == (int)FPS) ? 0 : FPS_count + 1;
         }
         else {
             
