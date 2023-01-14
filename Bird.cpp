@@ -110,6 +110,18 @@ bool Bird::Move()
     return false;
 }
 
+void Bird::MoveInMenu(MenuTitle *&title)
+{
+    counter = (counter + 1) % draw_frequency;
+
+    if (counter == 0) {
+        sprite_pos = (sprite_pos + 1) % img_count;
+    }
+
+    rect->x = title->getX() + title->getW() + 30;
+    rect->y = title->getY() + 10;
+}
+
 void Bird::ClickDetected()
 {
     if (al_get_timer_started(FlappyBird->GetTimer())) {
