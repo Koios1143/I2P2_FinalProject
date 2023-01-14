@@ -28,6 +28,12 @@
 
 #define NumOfGrid (field_width / grid_width) * (field_height / grid_height)
 
+const int rect_dx[] = {0, 1, 1, 0};
+const int rect_dy[] = {0, 0, 1, 1};
 
+struct dot{
+    int x;
+    int y;
+};
 
 #endif // GLOBAL_H_INCLUDED
