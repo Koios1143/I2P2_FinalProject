@@ -85,12 +85,16 @@ void Bird::Draw()
 
 }
 
-bool Bird::Move()
+bool Bird::Move(const State& state)
 {
     counter = (counter + 1) % draw_frequency;
 
     if (counter == 0) {
         sprite_pos = (sprite_pos + 1) % img_count;
+    }
+
+    if (state == GET_READY) {
+        return false;
     }
 
     if (!isReachGround){

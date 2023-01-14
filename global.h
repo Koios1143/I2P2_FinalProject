@@ -33,6 +33,9 @@
 #define min(a, b) ((a) < (b)? (a) : (b))
 #define max(a, b) ((a) > (b)? (a) : (b))
 
+// the state type
+enum State{ MENU = 0, GET_READY, IN_GAME, GAME_OVER };
+
 const int rect_dx[] = {0, 1, 1, 0};
 const int rect_dy[] = {0, 0, 1, 1};
 
