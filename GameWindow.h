@@ -110,7 +110,7 @@ private:
 
     // Game state
     State state = MENU;
-    int stage = 1;  // record current stage number.
+    int stage = 0;  // record current stage number.
     int score = 0;  // record current number of pipe passed
     int best_score = 0; // record the best score
 
