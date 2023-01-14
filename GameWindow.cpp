@@ -30,6 +30,7 @@ void GameWindow::game_init()
     menutitle = new MenuTitle(window_width/2 - 30, upper_bound);
     endtitle = new GameOverTitle(window_width/2, upper_bound + 30);
     scoreboard = new ScoreBoard(window_width/2, window_height/2);
+    ready = new ReadyTitle(window_width/2, upper_bound);
 
     al_set_window_position(display, 250, 0);
     al_set_window_title(display, "Flappy Bird");
@@ -202,7 +203,7 @@ int GameWindow::game_update()
     bool isreachground = false;
     if (state != GAME_OVER) update_ground_pos();
     if (state == IN_GAME) {
-        isreachground = flappyBird->Move();
+        isreachground = flappyBird->Move(state);
         if (isreachground) {
             change_state = true;
         }
@@ -222,6 +223,8 @@ int GameWindow::game_update()
     } else if (state == MENU) {
         menutitle->Move();
         flappyBird->MoveInMenu(menutitle);
+    } else if (state == GET_READY) {
+        flappyBird->Move(state);
     }
 
     return GAME_CONTINUE;
@@ -256,6 +259,10 @@ void GameWindow::draw_running_map()
     if(state == MENU){
         startbuttom->Draw();
         menutitle->Draw();
+        flappyBird->Draw();
+    }
+    else if (state == GET_READY) {
+        ready->Draw();
         flappyBird->Draw();
     }
     else if(state == IN_GAME) {
@@ -327,8 +334,11 @@ int GameWindow::process_event()
     if(event.type == ALLEGRO_EVENT_TIMER) {
         if(event.timer.source == timer) {
             redraw = true;
-            generate_new_pipes();
-            FPS_count = (FPS_count + 1 == (int)FPS) ? 0 : FPS_count + 1;
+            if (state == IN_GAME) {
+                generate_new_pipes();
+                FPS_count = (FPS_count + 1 == (int)FPS) ? 0 : FPS_count + 1;
+            }
+            
         }
     }
     else if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
@@ -338,7 +348,7 @@ int GameWindow::process_event()
         switch(event.keyboard.keycode) {
 
             case ALLEGRO_KEY_P:
-                if(al_get_timer_started(timer)) {
+                if(al_get_timer_started(timer) && state == IN_GAME) {
                     pause = true;
                     draw_running_map();
                     al_stop_timer(timer);
@@ -356,8 +366,9 @@ int GameWindow::process_event()
                     al_play_sample_instance(backgroundSound);*/
                 break;
             case ALLEGRO_KEY_SPACE:
-                if (state == IN_GAME) {
+                if (state == IN_GAME || state == GET_READY) {
                     flappyBird->ClickDetected();
+                    if (state == GET_READY) change_state = true;
                 }
                 break;
         }
@@ -366,6 +377,10 @@ int GameWindow::process_event()
         if(event.mouse.button == 1) {
             if(startbuttom != NULL && state == MENU){
                 selectedStart = startbuttom->mouse_hover(mouse_x, mouse_y);
+            }
+            if(state == GET_READY){
+                flappyBird->ClickDetected();
+                change_state = true;
             }
             if(pausebuttom != NULL && state == IN_GAME){
                 selectedPause = pausebuttom->mouse_hover(mouse_x, mouse_y);
@@ -415,10 +430,12 @@ int GameWindow::process_event()
     // MENU -> IN_GAME -> GAME_OVER
     if(change_state) {
         if (state == MENU) {
-            state = IN_GAME;
+            state = GET_READY;
             FPS_count = 0;
             PIPEs.clear();
             flappyBird->Reset();
+        }else if (state == GET_READY) {
+            state = IN_GAME;
         } else if (state == IN_GAME) {
             state = GAME_OVER;
             if (best_score < score) best_score = score;

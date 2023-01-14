@@ -7,6 +7,7 @@
 #define gravity 0.8
 #define critical_velocity 14
 
+
 class Bird: public Object
 {
     std::vector<ALLEGRO_BITMAP*> flyImg;
@@ -35,7 +36,7 @@ public:
     ~Bird();
     void Load_move();
     void Draw();
-    bool Move();
+    bool Move(const State& state);
     void MoveInMenu(MenuTitle *&title);
     void Reset();
 

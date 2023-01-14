@@ -13,6 +13,7 @@
 #include "MenuTitle.h"
 #include "GameOverTitle.h"
 #include "ScoreBoard.h"
+#include "ReadyTitle.h"
 
 #define GAME_INIT -1
 #define GAME_SETTING 0
@@ -30,8 +31,7 @@ const float FPS = 60;
 // total number of level
 const int LevelNum = 4;
 
-// the state type
-enum State{ MENU = 0, SCOREBOARD, IN_GAME, GAME_OVER };
+
 
 
 class GameWindow
@@ -105,10 +105,12 @@ private:
     MenuTitle *menutitle = nullptr;
     GameOverTitle *endtitle = nullptr;
     ScoreBoard *scoreboard = nullptr;
+    ReadyTitle *ready = nullptr;
+
 
     // Game state
     State state = MENU;
-    int stage = 0;  // record current stage number.
+    int stage = 1;  // record current stage number.
     int score = 0;  // record current number of pipe passed
     int best_score = 0; // record the best score
 
