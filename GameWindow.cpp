@@ -153,7 +153,6 @@ GameWindow::GameWindow()
 
 void GameWindow::game_begin()
 {
-    //printf(">>> Start Level[%d]\n", level->getLevel());
     // draw_running_map();
 
     //al_play_sample_instance(startSound);

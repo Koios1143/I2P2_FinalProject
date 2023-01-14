@@ -24,7 +24,6 @@ class PairPipe: public Pipe
         }
         
         virtual ~PairPipe(){
-            delete rect;
             delete upper_pipe;
             delete lower_pipe;
         }
