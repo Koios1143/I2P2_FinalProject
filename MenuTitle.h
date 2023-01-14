@@ -28,7 +28,6 @@ public:
             rect->y += direction;
             if (rect->y + rect->h > lower_bound || rect->y < upper_bound) direction *= -1; 
         }
-        
     }
 };
 

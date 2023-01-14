@@ -19,13 +19,13 @@ void GameWindow::game_init()
     ground = al_load_bitmap("./img/ground.png");
 
     // Initialize Buttoms
-    startbuttom = new StartButtom(window_width/2, window_height-200);
+    startbuttom = new StartButtom(window_width/2, window_height-250);
     pausebuttom = new PauseButtom(100, 100);
     resumebuttom = new ResumeButtom(100, 100);
     okbuttom = new OkButtom(window_width/2, window_height-200);
 
     // Initialize Titles
-    menutitle = new MenuTitle(window_width/2, upper_bound);
+    menutitle = new MenuTitle(window_width/2 - 30, upper_bound);
     endtitle = new GameOverTitle(window_width/2, upper_bound + 30);
 
     al_set_window_position(display, 250, 0);
@@ -131,6 +131,7 @@ GameWindow::GameWindow()
     font = al_load_ttf_font("Caviar_Dreams_Bold.ttf",12,0); // load small font
     Medium_font = al_load_ttf_font("Caviar_Dreams_Bold.ttf",24,0); //load medium font
     Large_font = al_load_ttf_font("Caviar_Dreams_Bold.ttf",36,0); //load large font
+    XLarge_font = al_load_ttf_font("Caviar_Dreams_Bold.ttf",60,0); //load extra large font
 
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_keyboard_event_source());
@@ -216,6 +217,7 @@ int GameWindow::game_update()
         }
     } else if (state == MENU) {
         menutitle->Move();
+        flappyBird->MoveInMenu(menutitle);
     }
 
     return GAME_CONTINUE;
@@ -250,10 +252,12 @@ void GameWindow::draw_running_map()
     if(state == MENU){
         startbuttom->Draw();
         menutitle->Draw();
+        flappyBird->Draw();
     }
     else if(state == IN_GAME) {
         if(pause) resumebuttom->Draw();
         else pausebuttom->Draw();
+        scoreDraw();
     }
     else if(state == GAME_OVER){
         okbuttom->Draw();
@@ -280,6 +284,13 @@ void GameWindow::groundDraw()
         al_get_bitmap_width(ground), al_get_bitmap_height(ground),
         second_ground_pos, ground_height, window_width, window_height - ground_height, 0
     );
+}
+
+void GameWindow::scoreDraw()
+{
+    char buffer[20];
+    sprintf(buffer, "%d", score);
+    al_draw_text(XLarge_font, WHITE, window_width / 2, 50, ALLEGRO_ALIGN_CENTER, buffer);
 }
 
 void GameWindow::generate_new_pipes(){
@@ -309,9 +320,6 @@ int GameWindow::process_event()
             generate_new_pipes();
             FPS_count = (FPS_count + 1 == (int)FPS) ? 0 : FPS_count + 1;
         }
-        else {
-            
-        }
     }
     else if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
         return GAME_EXIT;
@@ -336,6 +344,11 @@ int GameWindow::process_event()
                     al_stop_sample_instance(backgroundSound);
                 else
                     al_play_sample_instance(backgroundSound);*/
+                break;
+            case ALLEGRO_KEY_SPACE:
+                if (state == IN_GAME) {
+                    flappyBird->ClickDetected();
+                }
                 break;
         }
     }

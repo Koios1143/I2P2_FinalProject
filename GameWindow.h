@@ -65,6 +65,7 @@ public:
     }
 
     void groundDraw();
+    void scoreDraw();
 
     void generate_new_pipes();
 
@@ -83,6 +84,7 @@ private:
     ALLEGRO_FONT *font = NULL;
     ALLEGRO_FONT *Medium_font = NULL;
     ALLEGRO_FONT *Large_font = NULL;
+    ALLEGRO_FONT *XLarge_font = NULL;
 
     ALLEGRO_EVENT_QUEUE *event_queue = NULL;
     ALLEGRO_EVENT event;
@@ -105,6 +107,7 @@ private:
     // Game state
     State state = MENU;
     int stage = 0;  // record current stage number.
+    int score = 0;  // record current number of pipe passed
 
     Bird *flappyBird;
     

@@ -2,6 +2,7 @@
 #define BIRD_H_INCLUDED
 #include "Object.h"
 #include "global.h"
+#include "MenuTitle.h"
 #define click_velocity -12
 #define gravity 0.8
 #define critical_velocity 14
@@ -35,6 +36,7 @@ public:
     void Load_move();
     void Draw();
     bool Move();
+    void MoveInMenu(MenuTitle *&title);
     void Reset();
 
     void ClickDetected();
