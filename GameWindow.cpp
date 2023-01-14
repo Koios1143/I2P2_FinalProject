@@ -14,8 +14,6 @@ int randint(int L, int R){
 
 void GameWindow::game_init()
 {
-    char buffer[50];
-
     icon = al_load_bitmap("./img/Flappy_Bird_icon.png");
     background = al_load_bitmap("./img/background/background_night.png");
     ground = al_load_bitmap("./img/ground.png");

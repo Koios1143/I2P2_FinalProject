@@ -63,8 +63,8 @@ public:
         char buf_score[20], buf_best[20];
         sprintf(buf_score, "%d", score);
         sprintf(buf_best, "%d", best);
-        al_draw_text(score_font, BLACK, this->getX() + 400, this->getY() + 70, ALLEGRO_ALIGN_RIGHT, buf_score);
-        al_draw_text(score_font, BLACK, this->getX() + 400, this->getY() + 150, ALLEGRO_ALIGN_RIGHT, buf_best);
+        al_draw_text(score_font, BLACK, this->getX() + 420, this->getY() + 70, ALLEGRO_ALIGN_RIGHT, buf_score);
+        al_draw_text(score_font, BLACK, this->getX() + 420, this->getY() + 150, ALLEGRO_ALIGN_RIGHT, buf_best);
     }
     
 };

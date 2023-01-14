@@ -3,9 +3,9 @@
 #include "Object.h"
 #include "global.h"
 #include "MenuTitle.h"
-#define click_velocity -12
-#define gravity 0.8
-#define critical_velocity 14
+#define click_velocity -14
+#define gravity 1.1
+#define critical_velocity 16
 
 
 class Bird: public Object
@@ -33,7 +33,7 @@ class Bird: public Object
     const int BIRD_MAX_HEIGHT = -60;
 public:
     Bird();
-    ~Bird();
+    virtual ~Bird();
     void Load_move();
     void Draw();
     bool Move(const State& state);

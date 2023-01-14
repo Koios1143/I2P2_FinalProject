@@ -8,7 +8,7 @@ const int GAP_LEN = 230;
 const int PIPE_VELOCITY_MIN = 2;
 const int PIPE_VELOCITY_MAX = 5;
 const int PIPE_CENTER_MIN = 180;
-const int PIPE_CENTER_MAX = ground_height - 150;
+const int PIPE_CENTER_MAX = ground_height - 180;
 
 class PairPipe: public Pipe
 {

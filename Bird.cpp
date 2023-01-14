@@ -75,9 +75,6 @@ void Bird::Reset()
 
 void Bird::Draw()
 {
-    int width, height;
-    int offset = 0;
-
     if(!flyImg[sprite_pos])
         return;
 
