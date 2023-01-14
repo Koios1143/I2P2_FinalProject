@@ -7,8 +7,8 @@
 const int GAP_LEN = 230;
 const int PIPE_VELOCITY_MIN = 2;
 const int PIPE_VELOCITY_MAX = 5;
-const int PIPE_CENTER_MIN = 150;
-const int PIPE_CENTER_MAX = ground_height - 80;
+const int PIPE_CENTER_MIN = 180;
+const int PIPE_CENTER_MAX = ground_height - 150;
 
 class PairPipe: public Pipe
 {
@@ -41,12 +41,13 @@ class PairPipe: public Pipe
                 }
             }
             else{
-                if(min(lower_pipe->getRect()->points[0].y, lower_pipe->getRect()->points[2].y) + velocity > ground_height){
+                if(min(lower_pipe->getRect()->points[0].y, lower_pipe->getRect()->points[2].y) + velocity > MaximumPipeHeight){
                     velocity = -velocity;
                 }
             }
             lower_pipe->UpdatePos(dx, velocity);
             upper_pipe->UpdatePos(dx, velocity);
+            this->rect->UpdatePos(dx, velocity);
         }
 
         bool CollideWith(Object* obj){

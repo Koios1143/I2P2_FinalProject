@@ -75,6 +75,10 @@ void GameWindow::game_destroy()
         delete PIPEs.back();
         PIPEs.pop_back();
     }
+    while(!Bird_PIPEs.empty()){
+        delete Bird_PIPEs.back();
+        Bird_PIPEs.pop_back();
+    }
 }
 
 bool GameWindow::mouse_hover(int startx, int starty, int width, int height)
@@ -219,6 +223,29 @@ int GameWindow::game_update()
                 pipe->UpdatePos(-PIPE_dx, 0);
             }
         }
+        // Update every Bird pipes, when bird pass the pipe, score++
+        for(int i=0 ; i<Bird_PIPEs.size() ; i++){
+            Pipe* pipe = Bird_PIPEs[i];
+            if(min(pipe->getRect()->points[0].x, pipe->getRect()->points[2].x) <= flappyBird->getCenterX()){
+                score++;
+                delete pipe;
+                Bird_PIPEs.erase(Bird_PIPEs.begin() + i);
+                i--;
+            }
+            else if(pipe->getX() < -PIPE_W){
+                delete pipe;
+                Bird_PIPEs.erase(Bird_PIPEs.begin() + i);
+                i--;
+            }
+            else{
+                pipe->UpdatePos(-PIPE_dx, 0);
+            }
+        }
+
+        // update stage
+        if(score >= Level_1_Score_Max){
+            stage = 1;
+        }
     } else if (state == MENU) {
         menutitle->Move();
         flappyBird->MoveInMenu(menutitle);
@@ -302,10 +329,11 @@ void GameWindow::generate_new_pipes(){
     if(stage == 0){
         // stage 0: Random y position, fixed gap length
         if(FPS_count + 1 != (int)FPS) return;
-        int offset = randint(PIPE_RAND_MIN, PIPE_RAND_MAX);
-        double upper_radian = PI;
-        PIPEs.emplace_back(new Pipe(window_width + 100, - 7 * PIPE_H / 8 + offset, upper_radian));
-        PIPEs.emplace_back(new Pipe(window_width + 100, - 7 * PIPE_H / 8 + offset + GAP_LEN + PIPE_H, upper_radian - PI));
+        int center = randint(PIPE_CENTER_MIN, PIPE_CENTER_MAX);
+        int velocity = 0;
+        double radian = 0;
+        PIPEs.emplace_back(new PairPipe(window_width + 100, center, radian, velocity));
+        Bird_PIPEs.emplace_back(new PairPipe(window_width + 100, center, radian, velocity));
     }
     else{
         // stage 1: Random start y position, fixed gap length, but have velocity
@@ -314,6 +342,7 @@ void GameWindow::generate_new_pipes(){
         int velocity = randint(PIPE_VELOCITY_MIN, PIPE_VELOCITY_MAX);
         double radian = 0;
         PIPEs.emplace_back(new PairPipe(window_width + 100, center, radian, velocity));
+        Bird_PIPEs.emplace_back(new PairPipe(window_width + 100, center, radian, velocity));
     }
 }
 
@@ -327,8 +356,10 @@ int GameWindow::process_event()
     if(event.type == ALLEGRO_EVENT_TIMER) {
         if(event.timer.source == timer) {
             redraw = true;
-            generate_new_pipes();
-            FPS_count = (FPS_count + 1 == (int)FPS) ? 0 : FPS_count + 1;
+            if(state == IN_GAME){
+                generate_new_pipes();
+                FPS_count = (FPS_count + 1 == (int)FPS) ? 0 : FPS_count + 1;
+            }
         }
     }
     else if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
@@ -418,14 +449,29 @@ int GameWindow::process_event()
             state = IN_GAME;
             FPS_count = 0;
             PIPEs.clear();
+            Bird_PIPEs.clear();
             flappyBird->Reset();
         } else if (state == IN_GAME) {
             state = GAME_OVER;
+            
+            // update score
             if (best_score < score) best_score = score;
             scoreboard->Reset(score, best_score);
+            score = 0;
+
         } else if (state == GAME_OVER) {
             state = MENU;
             stage = 0;
+
+            // update pipes
+            while(!PIPEs.empty()){
+                delete PIPEs.back();
+                PIPEs.pop_back();
+            }
+            while(!Bird_PIPEs.empty()){
+                delete Bird_PIPEs.back();
+                Bird_PIPEs.pop_back();
+            }
         }
         change_state = false;
     }

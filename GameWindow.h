@@ -30,6 +30,9 @@ const float FPS = 60;
 // total number of level
 const int LevelNum = 4;
 
+// score to next stage
+const int Level_1_Score_Max = 20;
+
 // the state type
 enum State{ MENU = 0, SCOREBOARD, IN_GAME, GAME_OVER };
 
@@ -133,6 +136,7 @@ private:
     // the upper left corner of ground
     int ground_pos_x;
     std::vector<Pipe*> PIPEs;
+    std::vector<Pipe*> Bird_PIPEs;
 };
 
 extern GameWindow *FlappyBird;

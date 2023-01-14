@@ -27,6 +27,7 @@
 
 #define PI 3.1415926
 #define MinimumPipeHeight 80
+#define MaximumPipeHeight ground_height - 80
 
 #define NumOfGrid (field_width / grid_width) * (field_height / grid_height)
 #define min(a, b) ((a) < (b)? (a) : (b))
