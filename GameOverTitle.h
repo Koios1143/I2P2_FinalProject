@@ -1,6 +1,5 @@
 #ifndef GAMEOVERTITLE_H_INCLUDED
 #define GAMEOVERTITLE_H_INCLUDED
-
 #include "Title.h"
 
 class GameOverTitle: public Title

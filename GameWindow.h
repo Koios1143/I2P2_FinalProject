@@ -12,6 +12,7 @@
 #include "Pipe.h"
 #include "MenuTitle.h"
 #include "GameOverTitle.h"
+#include "ScoreBoard.h"
 
 #define GAME_INIT -1
 #define GAME_SETTING 0
@@ -103,11 +104,13 @@ private:
     // Titles
     MenuTitle *menutitle = nullptr;
     GameOverTitle *endtitle = nullptr;
+    ScoreBoard *scoreboard = nullptr;
 
     // Game state
     State state = MENU;
     int stage = 0;  // record current stage number.
     int score = 0;  // record current number of pipe passed
+    int best_score = 0; // record the best score
 
     Bird *flappyBird;
     

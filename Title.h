@@ -1,6 +1,5 @@
 #ifndef TITLE_H_INCLUDED
 #define TITLE_H_INCLUDED
-
 #include "Object.h"
 #include "global.h"
 

@@ -27,6 +27,7 @@ void GameWindow::game_init()
     // Initialize Titles
     menutitle = new MenuTitle(window_width/2 - 30, upper_bound);
     endtitle = new GameOverTitle(window_width/2, upper_bound + 30);
+    scoreboard = new ScoreBoard(window_width/2, window_height/2);
 
     al_set_window_position(display, 250, 0);
     al_set_window_title(display, "Flappy Bird");
@@ -66,6 +67,7 @@ void GameWindow::game_destroy()
     // Delete Title
     if (menutitle) delete menutitle;
     if (endtitle) delete endtitle;
+    if (scoreboard) delete scoreboard;
     // Delete Pipes
     while(!PIPEs.empty()){
         delete PIPEs.back();
@@ -262,6 +264,7 @@ void GameWindow::draw_running_map()
     else if(state == GAME_OVER){
         okbuttom->Draw();
         endtitle->Draw();
+        scoreboard->Draw();
     }
 
     al_flip_display();
@@ -411,6 +414,8 @@ int GameWindow::process_event()
             flappyBird->Reset();
         } else if (state == IN_GAME) {
             state = GAME_OVER;
+            if (best_score < score) best_score = score;
+            scoreboard->Reset(score, best_score);
         } else if (state == GAME_OVER) {
             state = MENU;
             stage = 0;

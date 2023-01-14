@@ -1,6 +1,5 @@
 #ifndef MENUTITLE_H_INCLUDED
 #define MENUTITLE_H_INCLUDED
-
 #include "Title.h"
 #define lower_bound (window_height - 650)
 #define upper_bound (window_height - 800)
