@@ -6,7 +6,7 @@
 
 const int PIPE_W = 101;
 const int PIPE_H = 642;
-const int PIPE_dx = 10;
+const int PIPE_dx = 7;
 const int PIPE_RAND_MIN = 50;
 const int PIPE_RAND_MAX = 470;
 

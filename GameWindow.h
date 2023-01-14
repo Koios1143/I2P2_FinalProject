@@ -94,6 +94,7 @@ private:
     ALLEGRO_SAMPLE *sample = NULL;
     ALLEGRO_SAMPLE_INSTANCE *passSound = NULL;
     ALLEGRO_SAMPLE_INSTANCE *hitSound = NULL;
+    ALLEGRO_SAMPLE_INSTANCE *dieSound = NULL;
 
     // Buttoms
     StartButtom *startbuttom = NULL;

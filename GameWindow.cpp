@@ -34,6 +34,16 @@ void GameWindow::game_init()
     al_set_window_title(display, "Flappy Bird");
     al_set_display_icon(display, icon);
     al_reserve_samples(3);
+    
+    // Initialize some Samples
+    sample = al_load_sample("./sound/sfx_point.wav");
+    passSound = al_create_sample_instance(sample);
+    al_set_sample_instance_playmode(passSound, ALLEGRO_PLAYMODE_ONCE);
+    al_attach_sample_instance_to_mixer(passSound, al_get_default_mixer());
+    sample = al_load_sample("./sound/sfx_die.wav");
+    dieSound = al_create_sample_instance(sample);
+    al_set_sample_instance_playmode(dieSound, ALLEGRO_PLAYMODE_ONCE);
+    al_attach_sample_instance_to_mixer(dieSound, al_get_default_mixer());
 
     /*sample = al_load_sample("growl.wav");
     startSound = al_create_sample_instance(sample);
@@ -78,6 +88,10 @@ void GameWindow::game_destroy()
         delete Bird_PIPEs.back();
         Bird_PIPEs.pop_back();
     }
+    // Delete Sounds
+    al_destroy_sample(sample);
+    al_destroy_sample_instance(passSound);
+    al_destroy_sample_instance(dieSound);
 }
 
 bool GameWindow::mouse_hover(int startx, int starty, int width, int height)
@@ -226,6 +240,8 @@ int GameWindow::game_update()
             Pipe* pipe = Bird_PIPEs[i];
             if(min(pipe->getRect()->points[0].x, pipe->getRect()->points[2].x) <= flappyBird->getCenterX()){
                 score++;
+                al_set_sample_instance_position(passSound, 0);
+                al_play_sample_instance(passSound);
                 delete pipe;
                 Bird_PIPEs.erase(Bird_PIPEs.begin() + i);
                 i--;
@@ -465,6 +481,10 @@ int GameWindow::process_event()
         } else if (state == IN_GAME) {
             state = GAME_OVER;
             
+            // play the die sound
+            al_set_sample_instance_position(dieSound, 0);
+            al_play_sample_instance(dieSound);
+
             // update score
             if (best_score < score) best_score = score;
             scoreboard->Reset(score, best_score);
