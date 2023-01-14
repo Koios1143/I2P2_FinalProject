@@ -1,8 +1,5 @@
 #include "Rect.h"
 
-#define min(a, b) (((a) < (b)) ? (a) : (b))
-#define max(a, b) (((a) > (b)) ? (a) : (b))
-
 double Heron(double a, double b, double c){
     double s = (a + b + c) / 2;
     return sqrt(s * (s - a) * (s - b) * (s - c));

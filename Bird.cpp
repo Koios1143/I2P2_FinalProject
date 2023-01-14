@@ -1,6 +1,5 @@
 #include "Bird.h"
 #include "GameWindow.h"
-#define max(a, b) (((a) > (b) ? (a) : (b)))
 
 // set counter frequency of drawing moving animation
 const int draw_frequency = 2;

@@ -7,8 +7,10 @@
 #define PURPLE al_map_rgb(149, 128, 255)
 #define BLUE al_map_rgb(77, 129, 179)
 
-#define min(a, b) ((a) < (b)? (a) : (b))
-#define max(a, b) ((a) > (b)? (a) : (b))
+int randint(int L, int R){
+    if(L > R) std::swap(L, R);
+    return rand() % (R - L + 1) + L;
+}
 
 void GameWindow::game_init()
 {
@@ -210,7 +212,7 @@ int GameWindow::game_update()
                 i--;
             }
             else{
-                pipe->update_pos(-PIPE_dx, 0);
+                pipe->UpdatePos(-PIPE_dx, 0);
             }
         }
     } else if (state == MENU) {
@@ -284,13 +286,18 @@ void GameWindow::generate_new_pipes(){
     if(stage == 0){
         // stage 0: Random y position, fixed gap length
         if(FPS_count + 1 != (int)FPS) return;
-        int offset = rand() % (PIPE_RAND_MAX - PIPE_RAND_MIN + 1) + PIPE_RAND_MIN;
+        int offset = randint(PIPE_RAND_MIN, PIPE_RAND_MAX);
         double upper_radian = PI;
         PIPEs.emplace_back(new Pipe(window_width + 100, - 7 * PIPE_H / 8 + offset, upper_radian));
         PIPEs.emplace_back(new Pipe(window_width + 100, - 7 * PIPE_H / 8 + offset + GAP_LEN + PIPE_H, upper_radian - PI));
     }
     else{
-
+        // stage 1: Random start y position, fixed gap length, but have velocity
+        if(FPS_count + 1 != (int)FPS) return;
+        int center = randint(PIPE_CENTER_MIN, PIPE_CENTER_MAX);
+        int velocity = randint(PIPE_VELOCITY_MIN, PIPE_VELOCITY_MAX);
+        double radian = 0;
+        PIPEs.emplace_back(new PairPipe(window_width + 100, center, radian, velocity));
     }
 }
 

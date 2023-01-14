@@ -30,6 +30,18 @@ public:
     static bool isOverlap(Rect *, Rect *);
     static bool isRotateOverlap(Rect *, Rect *);
 
+    void UpdatePos(int dx, int dy){
+        // printf("updated (%d, %d)\n", dx, dy);
+        this->x += dx;
+        this->y += dy;
+        this->center.x += dx;
+        this->center.y += dy;
+        for(int i=0 ; i<4 ; i++){
+            this->points[i].x += dx;
+            this->points[i].y += dy;
+        }
+    }
+
     int w, h;
     int x, y;
     double angle;

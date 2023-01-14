@@ -2,7 +2,6 @@
 #define MAINWINDOW_H_INCLUDED
 
 #include <list>
-#include <time.h>
 #include "global.h"
 #include "StartButtom.h"
 #include "PauseButtom.h"
@@ -10,6 +9,7 @@
 #include "ResumeButtom.h"
 #include "Bird.h"
 #include "Pipe.h"
+#include "PairPipe.h"
 #include "MenuTitle.h"
 
 #define GAME_INIT -1
@@ -102,7 +102,7 @@ private:
 
     // Game state
     State state = MENU;
-    int stage = 0;  // record current stage number.
+    int stage = 1;  // record current stage number.
 
     Bird *flappyBird;
     

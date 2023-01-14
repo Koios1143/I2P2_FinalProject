@@ -10,6 +10,7 @@
 #include <allegro5/allegro_ttf.h>
 #include <cmath>
 #include <iostream>
+#include <time.h>
 #include "algif5/src/algif.h"
 #include <cstring>
 #include <vector>
@@ -25,8 +26,11 @@
 #define field_height 600
 
 #define PI 3.1415926
+#define MinimumPipeHeight 80
 
 #define NumOfGrid (field_width / grid_width) * (field_height / grid_height)
+#define min(a, b) ((a) < (b)? (a) : (b))
+#define max(a, b) ((a) > (b)? (a) : (b))
 
 const int rect_dx[] = {0, 1, 1, 0};
 const int rect_dy[] = {0, 0, 1, 1};
