@@ -11,6 +11,7 @@
 #include "Bird.h"
 #include "Pipe.h"
 #include "MenuTitle.h"
+#include "GameOverTitle.h"
 
 #define GAME_INIT -1
 #define GAME_SETTING 0
@@ -99,6 +100,7 @@ private:
 
     // Titles
     MenuTitle *menutitle = nullptr;
+    GameOverTitle *endtitle = nullptr;
 
     // Game state
     State state = MENU;

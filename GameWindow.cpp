@@ -26,6 +26,7 @@ void GameWindow::game_init()
 
     // Initialize Titles
     menutitle = new MenuTitle(window_width/2, upper_bound);
+    endtitle = new GameOverTitle(window_width/2, upper_bound + 30);
 
     al_set_window_position(display, 250, 0);
     al_set_window_title(display, "Flappy Bird");
@@ -37,10 +38,39 @@ void GameWindow::game_init()
     al_set_sample_instance_playmode(startSound, ALLEGRO_PLAYMODE_ONCE);
     al_attach_sample_instance_to_mixer(startSound, al_get_default_mixer());*/
 
-
-    //level = new LEVEL(1);
-    //menu = new Menu();
     std::cout << "Game Initialized!\n";
+}
+
+void GameWindow::game_destroy()
+{
+    game_reset();
+
+    al_destroy_display(display);
+    al_destroy_event_queue(event_queue);
+    al_destroy_font(font);
+    al_destroy_font(Medium_font);
+    al_destroy_font(Large_font);
+
+    al_destroy_timer(timer);
+
+    al_destroy_bitmap(icon);
+    al_destroy_bitmap(background);
+
+    // Delete Bird
+    if (flappyBird) delete flappyBird;
+    // Delete Buttoms
+    if (startbuttom) delete startbuttom;
+    if (pausebuttom) delete pausebuttom;
+    if (resumebuttom) delete resumebuttom;
+    if (okbuttom) delete okbuttom;
+    // Delete Title
+    if (menutitle) delete menutitle;
+    if (endtitle) delete endtitle;
+    // Delete Pipes
+    while(!PIPEs.empty()){
+        delete PIPEs.back();
+        PIPEs.pop_back();
+    }
 }
 
 bool GameWindow::mouse_hover(int startx, int starty, int width, int height)
@@ -149,36 +179,7 @@ void GameWindow::game_reset()
     al_stop_timer(timer);
 }
 
-void GameWindow::game_destroy()
-{
-    game_reset();
 
-    al_destroy_display(display);
-    al_destroy_event_queue(event_queue);
-    al_destroy_font(font);
-    al_destroy_font(Medium_font);
-    al_destroy_font(Large_font);
-
-    al_destroy_timer(timer);
-
-    al_destroy_bitmap(icon);
-    al_destroy_bitmap(background);
-
-    // Delete Bird
-    if (flappyBird) delete flappyBird;
-    // Delete Buttoms
-    if (startbuttom) delete startbuttom;
-    if (pausebuttom) delete pausebuttom;
-    if (resumebuttom) delete resumebuttom;
-    if (okbuttom) delete okbuttom;
-    // Delete Title
-    if (menutitle) delete menutitle;
-    // Delete Pipes
-    while(!PIPEs.empty()){
-        delete PIPEs.back();
-        PIPEs.pop_back();
-    }
-}
 
 void GameWindow::show_err_msg(int msg)
 {
@@ -256,6 +257,7 @@ void GameWindow::draw_running_map()
     }
     else if(state == GAME_OVER){
         okbuttom->Draw();
+        endtitle->Draw();
     }
 
     al_flip_display();
