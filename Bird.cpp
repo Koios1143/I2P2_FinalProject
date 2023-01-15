@@ -78,7 +78,8 @@ void Bird::Draw()
     if(!flyImg[sprite_pos])
         return;
 
-    al_draw_bitmap(flyImg[sprite_pos], rect->x, rect->y, 0);
+    //al_draw_bitmap(flyImg[sprite_pos], rect->x, rect->y, 0);
+    al_draw_rotated_bitmap(flyImg[sprite_pos], rect->w / 2, rect->h / 2, rect->x + rect->w / 2, rect->y + rect->h / 2, rect->angle, 0);
 
 }
 
@@ -102,6 +103,7 @@ bool Bird::Move(const State& state)
     if (rect->y + rect->h > ground_height) isReachGround = true;
 
     if (velocity < critical_velocity) velocity += acceleration;
+    if (rect->angle < CRITICAL_RAD) rect->angle += rad_unit;
 
     if (isReachGround) {
         isReachGround = false;
@@ -121,6 +123,7 @@ void Bird::MoveInMenu(MenuTitle *&title)
 
     rect->x = title->getX() + title->getW() + 30;
     rect->y = title->getY() + 10;
+    rect->angle = 0;
 }
 
 void Bird::ClickDetected()
@@ -132,4 +135,5 @@ void Bird::ClickDetected()
     
     isReachGround = false;
     velocity = click_velocity;
+    rect->angle = CLICK_RAD;
 }
