@@ -13,6 +13,7 @@ class Buttom: public Object
 
         void Draw();
         void ToggleClicked();
+        ALLEGRO_SAMPLE_INSTANCE *&getSample() { return buttom; }
         bool mouse_hover(int mouse_x, int mouse_y);
 
         static float volume;

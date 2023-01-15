@@ -44,11 +44,21 @@ void GameWindow::game_init()
     dieSound = al_create_sample_instance(sample);
     al_set_sample_instance_playmode(dieSound, ALLEGRO_PLAYMODE_ONCE);
     al_attach_sample_instance_to_mixer(dieSound, al_get_default_mixer());
+    sample = al_load_sample("./sound/menubgm.wav");
+    menubgm = al_create_sample_instance(sample);
+    al_set_sample_instance_playmode(menubgm, ALLEGRO_PLAYMODE_LOOP);
+    al_attach_sample_instance_to_mixer(menubgm, al_get_default_mixer());
+    sample = al_load_sample("./sound/gamebgm.wav");
+    gamebgm = al_create_sample_instance(sample);
+    al_set_sample_instance_playmode(gamebgm, ALLEGRO_PLAYMODE_LOOP);
+    al_set_sample_instance_speed(gamebgm, 1.0);
+    al_set_sample_instance_gain(gamebgm, 0.5);
+    al_attach_sample_instance_to_mixer(gamebgm, al_get_default_mixer());
+    sample = al_load_sample("./sound/sfx_swooshing.wav");
+    change = al_create_sample_instance(sample);
+    al_set_sample_instance_playmode(change, ALLEGRO_PLAYMODE_ONCE);
+    al_attach_sample_instance_to_mixer(change, al_get_default_mixer());
 
-    /*sample = al_load_sample("growl.wav");
-    startSound = al_create_sample_instance(sample);
-    al_set_sample_instance_playmode(startSound, ALLEGRO_PLAYMODE_ONCE);
-    al_attach_sample_instance_to_mixer(startSound, al_get_default_mixer());*/
 
     std::cout << "Game Initialized!\n";
 }
@@ -92,6 +102,9 @@ void GameWindow::game_destroy()
     al_destroy_sample(sample);
     al_destroy_sample_instance(passSound);
     al_destroy_sample_instance(dieSound);
+    al_destroy_sample_instance(menubgm);
+    al_destroy_sample_instance(gamebgm);
+    al_destroy_sample_instance(change);
 }
 
 bool GameWindow::mouse_hover(int startx, int starty, int width, int height)
@@ -170,6 +183,7 @@ void GameWindow::game_begin()
     //al_play_sample_instance(startSound);
     //while(al_get_sample_instance_playing(startSound));
     //al_play_sample_instance(backgroundSound);
+    al_play_sample_instance(menubgm);
 
     al_start_timer(timer);
     flappyBird = new Bird;
@@ -400,11 +414,11 @@ int GameWindow::process_event()
                 }
                 break;
             case ALLEGRO_KEY_M:
-                /*mute = !mute;
+                mute = !mute;
                 if(mute)
-                    al_stop_sample_instance(backgroundSound);
+                    al_stop_sample_instance((state == MENU ? menubgm : gamebgm));
                 else
-                    al_play_sample_instance(backgroundSound);*/
+                    al_play_sample_instance((state == MENU ? menubgm : gamebgm));
                 break;
             case ALLEGRO_KEY_SPACE:
                 if (state == IN_GAME || state == GET_READY) {
@@ -476,6 +490,12 @@ int GameWindow::process_event()
             PIPEs.clear();
             Bird_PIPEs.clear();
             flappyBird->Reset();
+
+            // play game bgm
+            al_stop_sample_instance(menubgm);
+            while(al_get_sample_instance_playing(startbuttom->getSample()));
+            al_set_sample_instance_position(gamebgm, 0);
+            al_play_sample_instance(gamebgm);
         }else if (state == GET_READY) {
             state = IN_GAME;
         } else if (state == IN_GAME) {
@@ -503,6 +523,12 @@ int GameWindow::process_event()
                 delete Bird_PIPEs.back();
                 Bird_PIPEs.pop_back();
             }
+
+            // play menu bgm
+            al_stop_sample_instance(gamebgm);
+            while (al_get_sample_instance_playing(okbuttom->getSample()));
+            al_set_sample_instance_position(menubgm, 0);
+            al_play_sample_instance(menubgm);
         }
         change_state = false;
     }
