@@ -9,7 +9,7 @@ Boss::Boss(){
 
     ReachPipe = true;
 
-    sample = al_load_sample("./sound/sfx_wing.wav");
+    sample = al_load_sample("./sound/shoot.wav");
     attackSound = al_create_sample_instance(sample);
 
     al_set_sample_instance_playmode(attackSound, ALLEGRO_PLAYMODE_ONCE);
@@ -28,8 +28,8 @@ Boss::~Boss(){
 
     delete rect;
 
-    //al_destroy_sample_instance(wingSound);
-    //al_destroy_sample(sample);
+    al_destroy_sample_instance(attackSound);
+    al_destroy_sample(sample);
 }
 
 void Boss::Load_move(int x, int y){
@@ -72,8 +72,8 @@ void Boss::Move(Pipe* pp){
         this->velocity = 100;
         this->rect->UpdatePos(0, velocity);
         if(Rect(this->rect->x, this->rect->y + velocity, this->rect->w, this->rect->h).isOverlap(pp->GetUpperPipe()->getRect())){
-            al_set_sample_instance_position(attackSound, 0);
-            al_play_sample_instance(attackSound);
+            // al_set_sample_instance_position(attackSound, 0);
+            // al_play_sample_instance(attackSound);
             phase = 3;
         }
     }
@@ -90,6 +90,9 @@ void Boss::Attack(Object* target){
     int dx = (target->getX() - this->rect->x) / 40;
     int dy = (target->getY() - this->rect->y) / 40;
     this->Weapons.emplace_back(new Weapon(this->rect->x, this->rect->y, dx, dy));
+    al_set_sample_instance_position(attackSound, 0);
+    al_play_sample_instance(attackSound);
+    
 }
 
 bool Boss::WeaponCollide(Object* target){
