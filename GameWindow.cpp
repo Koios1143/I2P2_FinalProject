@@ -619,6 +619,7 @@ int GameWindow::process_event()
         } else if (state == IN_GAME) {
             state = BIRD_FALL;
             stage = 0;
+            AddFinalPipe = false;
         } else if (state == BIRD_FALL) {
             state = GAME_OVER;
 
