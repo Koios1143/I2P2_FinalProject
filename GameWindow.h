@@ -8,6 +8,7 @@
 #include "OkButtom.h"
 #include "ResumeButtom.h"
 #include "Bird.h"
+#include "Boss.h"
 #include "Pipe.h"
 #include "PairPipe.h"
 #include "MenuTitle.h"
@@ -35,6 +36,7 @@ const int LevelNum = 4;
 
 // score to next stage
 const int Level_1_Score_Max = 20;
+const int Level_2_Score_Max = 40;
 
 class GameWindow
 {
@@ -124,6 +126,8 @@ private:
     int best_score = 0; // record the best score
 
     Bird *flappyBird;
+
+    Boss *flappyBoss;
     
     int mouse_x, mouse_y;
     bool change_state = false;
@@ -140,6 +144,7 @@ private:
 
     // For pipes to know when to update
     int FPS_count;
+    int AttackCount;
 
     // the upper left corner of ground
     int ground_pos_x;

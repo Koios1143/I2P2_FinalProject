@@ -25,7 +25,12 @@ Boss::~Boss(){
     while(!Img.empty()){
         ALLEGRO_BITMAP* img = Img.back();
         Img.pop_back();
-        algif_destroy_bitmap(img);
+        al_destroy_bitmap(img);
+    }
+
+    while(!Weapons.empty()){
+        delete Weapons.back();
+        Weapons.pop_back();
     }
 
     delete rect;
@@ -47,9 +52,13 @@ void Boss::Draw(){
         return;
     
     al_draw_rotated_bitmap(Img[sprite_pos], rect->w / 2, rect->h / 2, rect->x + rect->w / 2, rect->y + rect->h / 2, 0, 0);
+
+    for(auto weapon: Weapons){
+        weapon->Draw();
+    }
 }
 
-void Boss::Move(){
+void Boss::Move(Pipe* pp){
     counter = (counter + 1 == draw_frequency) ? 0 : counter + 1;
 
     if(counter == 0){
@@ -57,14 +66,14 @@ void Boss::Move(){
     }
 
     if(phase == 1){
-        if(this->rect->y + velocity >= INITIAL_Y){
-            this->rect->y = INITIAL_Y;
+        ReachPipe = false;
+        if(Rect(this->rect->x, this->rect->y + velocity, this->rect->w, this->rect->h).isOverlap(pp->GetLowerPipe()->getRect())){
+            this->rect->y = pp->GetLowerPipe()->getY();
             ReachPipe = true;
         }
-        else if(this->rect->y + velocity < CEILING){
-            this->rect->y = CEILING;
+        else if(Rect(this->rect->x, this->rect->y + velocity, this->rect->w, this->rect->h).isOverlap(pp->GetUpperPipe()->getRect())){
+            this->rect->y = pp->GetUpperPipe()->getY() + PIPE_H;
             velocity = 0;
-            ReachPipe = false;
         }
         else{
             this->rect->y += velocity;
@@ -85,10 +94,39 @@ void Boss::Jump(){
     }
 }
 
-void Boss::Attack(int dx, int dy){
+void Boss::Attack(Object* target){
+    int dx = (target->getX() - this->rect->x) / 5;
+    int dy = (target->getY() - this->rect->y) / 5;
+    this->Weapons.emplace_back(Weapon(this->rect->x, this->rect->y, dx, dy));
+}
 
+bool Boss::WeaponCollide(Object* target){
+    for(auto weapon: Weapons){
+        if(target->isOverlap(weapon))
+            return true;
+    }
+    return false;
+}
+
+void Boss::UpdateWeapons(){
+    for(int i=0, end=Weapons.size() ; i<end ; i++){
+        Weapons[i]->Move();
+        if(Weapons[i]->getX() < -100){
+            delete Weapons[i];
+            Weapons.erase(Weapons.begin() + i);
+            i--;
+        }
+    }
 }
 
 bool Boss::isReachPipe(){
     return ReachPipe;
+}
+
+void Boss::UpdatePhase(int NewPhase){
+    this->phase = NewPhase;
+}
+
+int Boss::GetPhase(){
+    return this->phase;
 }

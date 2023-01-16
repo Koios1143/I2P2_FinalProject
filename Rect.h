@@ -27,7 +27,7 @@ public:
         }
     }
 
-    static bool isOverlap(Rect *, Rect *);
+    bool isOverlap(Rect *);
     static bool isRotateOverlap(Rect *, Rect *);
 
     void UpdatePos(int dx, int dy){

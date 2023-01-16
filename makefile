@@ -7,8 +7,8 @@ ALLEGRO_FLAGS = -I$(ALLEGRO_PATH)/include -L$(ALLEGRO_PATH)/lib/liballegro_monol
 DLL_PATH = $(ALLEGRO_PATH)/lib/liballegro_monolith.dll.a
 
 OUT:= game
-SOURCE = Main.cpp GameWindow.cpp Buttom.cpp Bird.cpp Title.cpp Rect.cpp
-OBJ = Main.o GameWindow.o Buttom.o Bird.o Title.o Rect.o
+SOURCE = Main.cpp GameWindow.cpp Buttom.cpp Bird.cpp Title.cpp Rect.cpp Boss.cpp Weapon.cpp
+OBJ = Main.o GameWindow.o Buttom.o Bird.o Title.o Rect.o Boss.o Weapon.o
 
 all:
 	$(CC) -c -g $(CFLAGS) $(SOURCE) $(ALLEGRO_FLAGS)
