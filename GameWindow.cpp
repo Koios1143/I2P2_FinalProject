@@ -274,30 +274,29 @@ int GameWindow::game_update()
         }
 
         // check whether collide with any pipe
-        if(immortal == 0){
-            for(auto pipe: PIPEs){
-                if(pipe->MultiPipe == 0){
-                    if(flappyBird->isOverlap(pipe)){
-                        change_state = true;
-                        al_play_sample_instance(hitSound);
-                    }
-                }
-                else{
-                    if(flappyBird->isOverlap(pipe->GetLowerPipe()) || flappyBird->isOverlap(pipe->GetUpperPipe())){
-                        change_state = true;
-                        al_play_sample_instance(hitSound);
-                    }
+        for(auto pipe: PIPEs){
+            if(pipe->MultiPipe == 0){
+                if(flappyBird->isOverlap(pipe)){
+                    if (immortal == 0) change_state = true;
+                    al_play_sample_instance(hitSound);
                 }
             }
-
-            // check whether collide with any weapon
-            if(stage == 2 && flappyBoss != NULL){
-                if(flappyBoss->WeaponCollide(flappyBird)){
-                    change_state = true;
+            else{
+                if(flappyBird->isOverlap(pipe->GetLowerPipe()) || flappyBird->isOverlap(pipe->GetUpperPipe())){
+                    if (immortal == 0) change_state = true;
                     al_play_sample_instance(hitSound);
                 }
             }
         }
+
+        // check whether collide with any weapon
+        if(stage == 2 && flappyBoss != NULL){
+            if(flappyBoss->WeaponCollide(flappyBird)){
+                if (immortal == 0) change_state = true;
+                al_play_sample_instance(hitSound);
+            }
+        }
+        
         
         // Update every pipes, x = x - PIPE_dx
         for(int i=0 ; i<PIPEs.size() ; i++){
@@ -528,13 +527,19 @@ int GameWindow::process_event()
                         flappyBoss->UpdatePhase(2);
                     }
 
-                    if(flappyBoss->GetPhase() == 1 && flappyBoss->getRect()->x == MAXIMUM_BOSS_PIPE_X && FPS_count % 7 == 6 && FPS_count < 42){
+                    if(flappyBoss->GetPhase() == 1 && flappyBoss->getRect()->x == MAXIMUM_BOSS_PIPE_X && FPS_count % ATTACK_PER_ROUND == (ATTACK_PER_ROUND - 1) && FPS_count < (ATTACK_PER_ROUND * (ATTACK_PER_ROUND - 1))){
                         flappyBoss->Attack(flappyBird);
                         AttackCount++;
                     }
                 }
 
                 FPS_count = (FPS_count + 1 == (int)FPS) ? 0 : FPS_count + 1;
+                if (FPS_count == 0 && stage == 2 && AttackCount > ATTACK_PER_ROUND) {
+                    score++;
+                    al_set_sample_instance_position(passSound, 0);
+                    al_play_sample_instance(passSound); 
+                    
+                }
             }
         }
     }
