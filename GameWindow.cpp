@@ -44,6 +44,10 @@ void GameWindow::game_init()
     dieSound = al_create_sample_instance(sample);
     al_set_sample_instance_playmode(dieSound, ALLEGRO_PLAYMODE_ONCE);
     al_attach_sample_instance_to_mixer(dieSound, al_get_default_mixer());
+    sample = al_load_sample("./sound/sfx_hit.wav");
+    hitSound = al_create_sample_instance(sample);
+    al_set_sample_instance_playmode(hitSound, ALLEGRO_PLAYMODE_ONCE);
+    al_attach_sample_instance_to_mixer(hitSound, al_get_default_mixer());
     sample = al_load_sample("./sound/menubgm.wav");
     menubgm = al_create_sample_instance(sample);
     al_set_sample_instance_playmode(menubgm, ALLEGRO_PLAYMODE_LOOP);
@@ -102,6 +106,7 @@ void GameWindow::game_destroy()
     al_destroy_sample(sample);
     al_destroy_sample_instance(passSound);
     al_destroy_sample_instance(dieSound);
+    al_destroy_sample_instance(hitSound);
     al_destroy_sample_instance(menubgm);
     al_destroy_sample_instance(gamebgm);
     al_destroy_sample_instance(change);
