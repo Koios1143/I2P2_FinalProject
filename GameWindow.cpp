@@ -554,7 +554,9 @@ int GameWindow::process_event()
             state = IN_GAME;
         } else if (state == IN_GAME) {
             state = BIRD_FALL;
-            
+        } else if (state == BIRD_FALL) {
+            state = GAME_OVER;
+
             // play the die sound
             al_set_sample_instance_position(dieSound, 0);
             al_play_sample_instance(dieSound);
@@ -563,9 +565,6 @@ int GameWindow::process_event()
             if (best_score < score) best_score = score;
             scoreboard->Reset(score, best_score);
             score = 0;
-
-        } else if (state == BIRD_FALL) {
-            state = GAME_OVER;
         }
         else if (state == GAME_OVER) {
             state = MENU;
