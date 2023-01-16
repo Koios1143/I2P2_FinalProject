@@ -8,6 +8,7 @@ Title::Title(int posx, int posy, int width, int height)
 Title::~Title()
 {
     delete rect;
+    al_destroy_bitmap(title_img);
 }
 
 void Title::Draw()
