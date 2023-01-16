@@ -14,6 +14,7 @@
 #include "algif5/src/algif.h"
 #include <cstring>
 #include <vector>
+#include <fstream>
 
 #define font_size 12
 #define grid_width 40

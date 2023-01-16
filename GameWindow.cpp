@@ -63,12 +63,15 @@ void GameWindow::game_init()
     al_set_sample_instance_playmode(change, ALLEGRO_PLAYMODE_ONCE);
     al_attach_sample_instance_to_mixer(change, al_get_default_mixer());
 
+    // Load record(best score,...)
+    Load_record();
 
     std::cout << "Game Initialized!\n";
 }
 
 void GameWindow::game_destroy()
 {
+    Write_record();
     game_reset();
 
     al_destroy_display(display);
@@ -119,6 +122,29 @@ bool GameWindow::mouse_hover(int startx, int starty, int width, int height)
             return true;
 
     return false;
+}
+
+void GameWindow::Load_record()
+{
+    std::ifstream rin("./record.txt");
+    std::string option;
+    while(rin >> option) {
+        if (option == "best") {
+            rin >> best_score;
+        } else if (option == "immortal") {
+            rin >> immortal;
+        }
+    }
+
+    rin.close();
+}
+
+void GameWindow::Write_record()
+{
+    std::ofstream rout("./record.txt");
+    rout << "best " << best_score << '\n';
+    rout << "immortal " << immortal << '\n';
+    rout.close();
 }
 
 void GameWindow::game_play()
@@ -243,7 +269,7 @@ int GameWindow::game_update()
         }
 
         // check whether collid with any pipe
-        if(IMMORTAL == 0){
+        if(immortal == 0){
             for(auto pipe: PIPEs){
                 if(pipe->MultiPipe == 0){
                     if(flappyBird->isOverlap(pipe)){
