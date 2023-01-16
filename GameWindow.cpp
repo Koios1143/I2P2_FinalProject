@@ -237,6 +237,14 @@ int GameWindow::game_update()
             change_state = true;
         }
 
+        // check whether collid with any pipe
+        for(auto pipe: PIPEs){
+            if(flappyBird->isOverlap(pipe)){
+                change_state = true;
+                return GAME_CONTINUE;
+            }
+        }
+
         // Update every pipes, x = x - PIPE_dx
         for(int i=0 ; i<PIPEs.size() ; i++){
             Pipe* pipe = PIPEs[i];
@@ -295,7 +303,7 @@ void GameWindow::draw_running_map()
     );
 
     // Draw Pipes
-    if(state == IN_GAME || state == GAME_OVER) {
+    if(state == IN_GAME || state == GAME_OVER || state == BIRD_FALL) {
         for(auto pipe: PIPEs){
             pipe->Draw();
         }
@@ -305,7 +313,7 @@ void GameWindow::draw_running_map()
     groundDraw();
 
     // Draw Bird
-    if(state == IN_GAME || state == GAME_OVER) {
+    if(state == IN_GAME || state == GAME_OVER || state == BIRD_FALL) {
         flappyBird->Draw();
     }
 
@@ -496,10 +504,10 @@ int GameWindow::process_event()
             while(al_get_sample_instance_playing(startbuttom->getSample()));
             al_set_sample_instance_position(gamebgm, 0);
             al_play_sample_instance(gamebgm);
-        }else if (state == GET_READY) {
+        } else if (state == GET_READY) {
             state = IN_GAME;
         } else if (state == IN_GAME) {
-            state = GAME_OVER;
+            state = BIRD_FALL;
             
             // play the die sound
             al_set_sample_instance_position(dieSound, 0);
@@ -510,7 +518,10 @@ int GameWindow::process_event()
             scoreboard->Reset(score, best_score);
             score = 0;
 
-        } else if (state == GAME_OVER) {
+        } else if (state == BIRD_FALL) {
+            state = GAME_OVER;
+        }
+        else if (state == GAME_OVER) {
             state = MENU;
             stage = 0;
 

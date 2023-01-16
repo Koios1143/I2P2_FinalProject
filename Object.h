@@ -20,6 +20,9 @@ public:
     int getCenterY() { return rect->y + rect->h/2; }
 
     Rect *getRect() const { return rect; }
+    bool isOverlap(Object* obj){
+        return this->rect->isOverlap(this->rect, obj->getRect());
+    }
 
 protected:
     Rect *rect;
