@@ -243,13 +243,15 @@ int GameWindow::game_update()
         }
 
         // check whether collid with any pipe
-        for(auto pipe: PIPEs){
-            if(flappyBird->isOverlap(pipe)){
-                change_state = true;
-                return GAME_CONTINUE;
+        if(IMMORTAL == 0){
+            for(auto pipe: PIPEs){
+                if(flappyBird->isOverlap(pipe)){
+                    change_state = true;
+                    al_play_sample_instance(hitSound);
+                }
             }
         }
-
+        
         // Update every pipes, x = x - PIPE_dx
         for(int i=0 ; i<PIPEs.size() ; i++){
             Pipe* pipe = PIPEs[i];
@@ -286,6 +288,11 @@ int GameWindow::game_update()
         // update stage
         if(score >= Level_1_Score_Max){
             stage = 1;
+        }
+    } else if(state == BIRD_FALL) {
+        isreachground = flappyBird->Move(state);
+        if (isreachground) {
+            change_state = true;
         }
     } else if (state == MENU) {
         menutitle->Move();
