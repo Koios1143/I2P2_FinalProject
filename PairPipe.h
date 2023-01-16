@@ -5,6 +5,7 @@
 #include "global.h"
 
 const int GAP_LEN = 230;
+const int GAP_LEN2 = 460;
 const int PIPE_VELOCITY_MIN = 2;
 const int PIPE_VELOCITY_MAX = 5;
 const int PIPE_CENTER_MIN = 180;
@@ -29,8 +30,8 @@ class PairPipe: public Pipe
                 this->upper_pipe = new Pipe(center_x - PIPE_W / 2, center_y - GAP_LEN / 2 - PIPE_H, angle, velocity, 3);
             }
             else{
-                this->lower_pipe = new Pipe(center_x - PIPE_W / 2, center_y + GAP_LEN / 2, angle, velocity, 4);
-                this->upper_pipe = new Pipe(center_x - PIPE_W / 2, center_y - GAP_LEN / 2 - PIPE_H, angle, velocity, 5);
+                this->lower_pipe = new Pipe(center_x - PIPE_W / 2, center_y + GAP_LEN2 / 2, angle, velocity, 4);
+                this->upper_pipe = new Pipe(center_x - PIPE_W / 2, center_y - GAP_LEN2 / 2 - PIPE_H, angle, velocity, 5);
             }
         }
         
