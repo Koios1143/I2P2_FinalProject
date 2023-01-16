@@ -103,7 +103,7 @@ bool Bird::Move(const State& state)
     if (rect->y + rect->h > ground_height) isReachGround = true;
 
     if (velocity < critical_velocity) velocity += acceleration;
-    if (rect->angle < CRITICAL_RAD) rect->angle += rad_unit;
+    if (rect->angle < CRITICAL_RAD && velocity > 0) rect->angle += rad_unit;
 
     if (isReachGround) {
         isReachGround = false;

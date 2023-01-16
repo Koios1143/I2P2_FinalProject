@@ -6,10 +6,10 @@
 #define click_velocity -14
 #define gravity 1.1
 #define critical_velocity 16
-#define CLICK_RAD -(PI / 3)
+#define CLICK_RAD -(PI / 5)
 #define CRITICAL_RAD (PI / 2)
 
-const double rad_unit = (CRITICAL_RAD - CLICK_RAD) / ((critical_velocity - click_velocity) / 0.8);
+const double rad_unit = (CRITICAL_RAD - CLICK_RAD) / ((critical_velocity - click_velocity) / gravity);
 
 class Bird: public Object
 {
