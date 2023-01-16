@@ -12,7 +12,7 @@ public:
         this->rect = new Rect;
         this->rect->w = al_get_bitmap_width(flag_img);
         this->rect->h = al_get_bitmap_height(flag_img);
-        this->rect->x = pos_x - this->rect->w / 2;
+        this->rect->x = pos_x + this->rect->w;
         this->rect->y = pos_y - this->rect->h / 2;
     }
     ~Endflag() {
@@ -29,7 +29,9 @@ public:
             this->getW(), this->getH(), 0
         );
     }
-
+    void Update(int dx, int dy){
+        this->rect->UpdatePos(dx, dy);
+    }
 };
 
 #endif
