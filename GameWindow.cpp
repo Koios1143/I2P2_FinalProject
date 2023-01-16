@@ -220,8 +220,6 @@ void GameWindow::game_begin()
     al_start_timer(timer);
     flappyBird = new Bird;
     flappyBird->Load_move();
-    flappyBoss = new Boss;
-    flappyBoss->Load_move();
     std::cout << "Game Beginning...\n";
 }
 
@@ -267,7 +265,15 @@ int GameWindow::game_update()
             change_state = true;
         }
 
-        // check whether collid with any pipe
+        // update boss
+        if(stage == 2 && flappyBoss != NULL){
+            if(flappyBoss->getRect()->y > window_height + 100){
+                delete flappyBoss;
+                flappyBoss = NULL;
+            }
+        }
+
+        // check whether collide with any pipe
         if(immortal == 0){
             for(auto pipe: PIPEs){
                 if(pipe->MultiPipe == 0){
@@ -285,7 +291,7 @@ int GameWindow::game_update()
             }
 
             // check whether collide with any weapon
-            if(stage == 2){
+            if(stage == 2 && flappyBoss != NULL){
                 if(flappyBoss->WeaponCollide(flappyBird)){
                     change_state = true;
                     al_play_sample_instance(hitSound);
@@ -326,7 +332,7 @@ int GameWindow::game_update()
             }
         }
 
-        if(stage == 2){
+        if(flappyBoss != NULL && stage == 2){
             flappyBoss->Move(PIPEs.back());
             flappyBoss->UpdateWeapons();
         }
@@ -378,8 +384,7 @@ void GameWindow::draw_running_map()
         flappyBird->Draw();
     }
 
-    // TODO: Draw Boss
-    if(state == IN_GAME && stage == 2){
+    if(state == IN_GAME && stage == 2 && flappyBoss != NULL){
         // Draw Boss when in stage 2
         flappyBoss->Draw();
     }
@@ -434,25 +439,35 @@ void GameWindow::scoreDraw()
     al_draw_text(XLarge_font, WHITE, window_width / 2, 50, ALLEGRO_ALIGN_CENTER, buffer);
 }
 
-void GameWindow::generate_new_pipes(){
+int GameWindow::generate_new_pipes(){
+    int center;
     if(stage == 0){
         // stage 0: Random y position, fixed gap length
-        if(FPS_count + 1 != (int)FPS) return;
-        int center = randint(PIPE_CENTER_MIN, PIPE_CENTER_MAX);
+        if(FPS_count + 1 != (int)FPS) return -1;
+        center = randint(PIPE_CENTER_MIN, PIPE_CENTER_MAX);
         int velocity = 0;
         double radian = 0;
         PIPEs.emplace_back(new PairPipe(window_width + 100, center, radian, velocity));
         Bird_PIPEs.emplace_back(new PairPipe(window_width + 100, center, radian, velocity));
     }
-    else{
+    else if(stage == 1){
         // stage 1: Random start y position, fixed gap length, but have velocity
-        if(FPS_count + 1 != (int)FPS) return;
-        int center = randint(PIPE_CENTER_MIN, PIPE_CENTER_MAX);
+        if(FPS_count + 1 != (int)FPS) return -1;
+        center = randint(PIPE_CENTER_MIN, PIPE_CENTER_MAX);
         int velocity = randint(PIPE_VELOCITY_MIN, PIPE_VELOCITY_MAX);
         double radian = 0;
         PIPEs.emplace_back(new PairPipe(window_width + 100, center, radian, velocity));
         Bird_PIPEs.emplace_back(new PairPipe(window_width + 100, center, radian, velocity));
     }
+    else{
+        // stage 2: Boss
+        center = randint(PIPE_CENTER_MIN, PIPE_CENTER_MAX);
+        int velocity = randint(PIPE_VELOCITY_MIN, PIPE_VELOCITY_MAX);
+        double radian = 0;
+        PIPEs.emplace_back(new PairPipe(window_width + 100, center, radian, velocity, 1));
+        Bird_PIPEs.emplace_back(new PairPipe(window_width + 100, center, radian, velocity));
+    }
+    return center;
 }
 
 int GameWindow::process_event()
@@ -466,10 +481,20 @@ int GameWindow::process_event()
         if(event.timer.source == timer) {
             redraw = true;
             if(state == IN_GAME){
-                generate_new_pipes();
+                if(stage == 2){
+                    if(AddFinalPipe == false){
+                        AddFinalPipe = true;
+                        int y = generate_new_pipes();
+                        flappyBoss = new Boss();
+                        flappyBoss->Load_move(window_width + 100, y);
+                    }
+                }
+                else{
+                    generate_new_pipes();
+                }
 
                 // Update flappy boss
-                if(stage == 2){
+                if(flappyBoss != NULL && stage == 2){
                     if(flappyBoss->GetPhase() == 1 && flappyBoss->isReachPipe()){
                         flappyBoss->Jump();
                     }
@@ -478,7 +503,7 @@ int GameWindow::process_event()
                         flappyBoss->UpdatePhase(2);
                     }
 
-                    if(flappyBoss->GetPhase() == 1 && FPS_count >= 0 && FPS_count < 3){
+                    if(flappyBoss->GetPhase() == 1 && FPS_count < (int)FPS && FPS_count >= (int)FPS - 3){
                         flappyBoss->Attack(flappyBird);
                         AttackCount++;
                     }
@@ -593,6 +618,7 @@ int GameWindow::process_event()
             state = IN_GAME;
         } else if (state == IN_GAME) {
             state = BIRD_FALL;
+            stage = 0;
         } else if (state == BIRD_FALL) {
             state = GAME_OVER;
 

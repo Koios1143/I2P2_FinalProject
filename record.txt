@@ -1,2 +1,2 @@
 best 41
-immortal 0
+immortal 1

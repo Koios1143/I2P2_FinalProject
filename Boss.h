@@ -15,7 +15,7 @@ class Boss: public Object
     public:
         Boss();
         virtual ~Boss();
-        void Load_move();
+        void Load_move(int, int);
         void Draw();
         void Move(Pipe*);
         void Jump();
@@ -27,17 +27,13 @@ class Boss: public Object
         bool WeaponCollide(Object*);
         void UpdateWeapons();
 
-        int counter;
-        int sprite_pos;
-        int img_count;
-
         double velocity = click_velocity;
         double acceleration = gravity;
     
         static float volume;
 
     protected:
-        std::vector<ALLEGRO_BITMAP*> Img;
+        ALLEGRO_BITMAP* Img;
         ALLEGRO_SAMPLE_INSTANCE *attackSound = NULL;
         ALLEGRO_SAMPLE *sample = NULL;
 

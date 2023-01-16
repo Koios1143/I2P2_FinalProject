@@ -9,6 +9,7 @@ const int PIPE_H = 642;
 const int PIPE_dx = 7;
 const int PIPE_RAND_MIN = 50;
 const int PIPE_RAND_MAX = 470;
+const int MAXIMUM_BOSS_PIPE_X = window_width * 2 / 3;
 
 class Pipe: public Object
 {
@@ -19,8 +20,11 @@ class Pipe: public Object
             this->angle = angle;
             this->velocity = velocity;
             this->MultiPipe = MultiPipe;
+            this->type = type;
             if(type == 0) this->pipe_img = al_load_bitmap("./img/upward_pipe.png");
-            else this->pipe_img = al_load_bitmap("./img/downward_pipe.png");
+            else if(type == 1) this->pipe_img = al_load_bitmap("./img/downward_pipe.png");
+            else if(type == 2) this->pipe_img = al_load_bitmap("./img/upward_boss_pipe.png");
+            else this->pipe_img = al_load_bitmap("./img/downward_boss_pipe.png");
         }
         virtual ~Pipe(){
             delete rect;
@@ -33,7 +37,16 @@ class Pipe: public Object
 
         virtual void UpdatePos(int dx, int dy){
             // printf("velocity: %d\n", dy);
-            this->rect->UpdatePos(dx, dy);
+            if(type == 0 || type == 1)
+                this->rect->UpdatePos(dx, dy);
+            else{
+                if(this->rect->x + dx < MAXIMUM_BOSS_PIPE_X){
+                    this->rect->UpdatePos(MAXIMUM_BOSS_PIPE_X - this->rect->x, dy);
+                }
+                else{
+                    this->rect->UpdatePos(dx, dy);
+                }
+            }
         }
 
         bool CollideWith(Object* obj){
@@ -53,6 +66,7 @@ class Pipe: public Object
         ALLEGRO_BITMAP *pipe_img = NULL;
         double angle;
         int velocity;
+        int type;
 };
 
 #endif
