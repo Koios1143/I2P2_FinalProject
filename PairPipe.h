@@ -24,9 +24,13 @@ class PairPipe: public Pipe
                 this->lower_pipe = new Pipe(center_x - PIPE_W / 2, center_y + GAP_LEN / 2, angle, velocity, 0);
                 this->upper_pipe = new Pipe(center_x - PIPE_W / 2, center_y - GAP_LEN / 2 - PIPE_H, angle, velocity, 1);
             }
-            else{
+            else if(type == 1){
                 this->lower_pipe = new Pipe(center_x - PIPE_W / 2, center_y + GAP_LEN / 2, angle, velocity, 2);
                 this->upper_pipe = new Pipe(center_x - PIPE_W / 2, center_y - GAP_LEN / 2 - PIPE_H, angle, velocity, 3);
+            }
+            else{
+                this->lower_pipe = new Pipe(center_x - PIPE_W / 2, center_y + GAP_LEN / 2, angle, velocity, 4);
+                this->upper_pipe = new Pipe(center_x - PIPE_W / 2, center_y - GAP_LEN / 2 - PIPE_H, angle, velocity, 5);
             }
         }
         
