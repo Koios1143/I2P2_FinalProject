@@ -63,12 +63,15 @@ void GameWindow::game_init()
     al_set_sample_instance_playmode(change, ALLEGRO_PLAYMODE_ONCE);
     al_attach_sample_instance_to_mixer(change, al_get_default_mixer());
 
+    // Load record(best score,...)
+    Load_record();
 
     std::cout << "Game Initialized!\n";
 }
 
 void GameWindow::game_destroy()
 {
+    Write_record();
     game_reset();
 
     al_destroy_display(display);
@@ -120,6 +123,29 @@ bool GameWindow::mouse_hover(int startx, int starty, int width, int height)
             return true;
 
     return false;
+}
+
+void GameWindow::Load_record()
+{
+    std::ifstream rin("./record.txt");
+    std::string option;
+    while(rin >> option) {
+        if (option == "best") {
+            rin >> best_score;
+        } else if (option == "immortal") {
+            rin >> immortal;
+        }
+    }
+
+    rin.close();
+}
+
+void GameWindow::Write_record()
+{
+    std::ofstream rout("./record.txt");
+    rout << "best " << best_score << '\n';
+    rout << "immortal " << immortal << '\n';
+    rout.close();
 }
 
 void GameWindow::game_play()
@@ -241,8 +267,8 @@ int GameWindow::game_update()
             change_state = true;
         }
 
-        if(IMMORTAL == 0){
-            // check whether collide with any pipe
+        // check whether collid with any pipe
+        if(immortal == 0){
             for(auto pipe: PIPEs){
                 if(pipe->MultiPipe == 0){
                     if(flappyBird->isOverlap(pipe)){
@@ -567,7 +593,9 @@ int GameWindow::process_event()
             state = IN_GAME;
         } else if (state == IN_GAME) {
             state = BIRD_FALL;
-            
+        } else if (state == BIRD_FALL) {
+            state = GAME_OVER;
+
             // play the die sound
             al_set_sample_instance_position(dieSound, 0);
             al_play_sample_instance(dieSound);
@@ -576,9 +604,6 @@ int GameWindow::process_event()
             if (best_score < score) best_score = score;
             scoreboard->Reset(score, best_score);
             score = 0;
-
-        } else if (state == BIRD_FALL) {
-            state = GAME_OVER;
         }
         else if (state == GAME_OVER) {
             state = MENU;

@@ -26,7 +26,6 @@
 #define GAME_TERMINATE 5
 #define GAME_NEXT_LEVEL 6
 #define GAME_EXIT 7
-#define IMMORTAL 0
 
 // clock rate
 const float FPS = 60;
@@ -76,6 +75,8 @@ public:
 
     inline ALLEGRO_TIMER* &GetTimer() { return this->timer; };
     
+    void Load_record();
+    void Write_record();
 
 public:
     bool initial = true;
@@ -124,6 +125,7 @@ private:
     int stage = 0;  // record current stage number.
     int score = 0;  // record current number of pipe passed
     int best_score = 0; // record the best score
+    int immortal = 0;
 
     Bird *flappyBird;
 
