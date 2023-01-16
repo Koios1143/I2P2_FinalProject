@@ -21,6 +21,7 @@ class Boss: public Object
         void Jump();
         void UpdatePhase(int);
         int GetPhase();
+        int GetWeaponSize();
         void Attack(Object*);
 
         bool isReachPipe();

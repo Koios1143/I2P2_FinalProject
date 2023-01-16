@@ -87,8 +87,8 @@ void Boss::Jump(){
 }
 
 void Boss::Attack(Object* target){
-    int dx = (target->getX() - this->rect->x) / 60;
-    int dy = (target->getY() - this->rect->y) / 60;
+    int dx = (target->getX() - this->rect->x) / 40;
+    int dy = (target->getY() - this->rect->y) / 40;
     this->Weapons.emplace_back(new Weapon(this->rect->x, this->rect->y, dx, dy));
 }
 
@@ -101,9 +101,9 @@ bool Boss::WeaponCollide(Object* target){
 }
 
 void Boss::UpdateWeapons(){
-    for(int i=0, end=Weapons.size() ; i<end ; i++){
+    for(int i=0, end=Weapons.size() ; i<end && i<Weapons.size() ; i++){
         Weapons[i]->Move();
-        if(Weapons[i]->getX() < -100){
+        if(Weapons[i]->getRect()->x < -100){
             delete Weapons[i];
             Weapons.erase(Weapons.begin() + i);
             i--;
@@ -121,4 +121,8 @@ void Boss::UpdatePhase(int NewPhase){
 
 int Boss::GetPhase(){
     return this->phase;
+}
+
+int Boss::GetWeaponSize(){
+    return this->Weapons.size();
 }

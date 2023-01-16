@@ -1,7 +1,6 @@
 #include "Weapon.h"
 
 Weapon::Weapon(int x, int y, int vx, int vy){
-    printf("Construct new weapon\n");
     rect = new Rect(x, y, WEAPON_W, WEAPON_H);
     this->velocity_x = vx;
     this->velocity_y = vy;

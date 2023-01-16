@@ -267,7 +267,7 @@ int GameWindow::game_update()
 
         // update boss
         if(stage == 2 && flappyBoss != NULL){
-            if(flappyBoss->getRect()->y > window_height + 100){
+            if(flappyBoss->getRect()->y > window_height + 100 && flappyBoss->GetWeaponSize() == 0){
                 delete flappyBoss;
                 flappyBoss = NULL;
             }
@@ -503,7 +503,7 @@ int GameWindow::process_event()
                         flappyBoss->UpdatePhase(2);
                     }
 
-                    if(flappyBoss->GetPhase() == 1 && FPS_count < (int)FPS && FPS_count >= (int)FPS - 3){
+                    if(flappyBoss->GetPhase() == 1 && flappyBoss->getRect()->x == MAXIMUM_BOSS_PIPE_X && FPS_count % 7 == 6 && FPS_count < 42){
                         flappyBoss->Attack(flappyBird);
                         AttackCount++;
                     }
