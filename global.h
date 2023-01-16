@@ -29,6 +29,10 @@
 #define MinimumPipeHeight 80
 #define MaximumPipeHeight ground_height - 80
 
+#define gravity 1.1
+#define click_velocity -14
+#define critical_velocity 16
+
 #define NumOfGrid (field_width / grid_width) * (field_height / grid_height)
 #define min(a, b) ((a) < (b)? (a) : (b))
 #define max(a, b) ((a) > (b)? (a) : (b))

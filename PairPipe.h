@@ -16,7 +16,7 @@ class PairPipe: public Pipe
         // x, y, angle
         PairPipe(int center_x, int center_y, double angle, int velocity = 0): Pipe(
             center_x - PIPE_W / 2, center_y - GAP_LEN / 2 - PIPE_H,
-            angle, velocity, 0
+            angle, velocity, 0, 1
         ){
             this->velocity = velocity;
             this->lower_pipe = new Pipe(center_x - PIPE_W / 2, center_y + GAP_LEN / 2, angle, velocity, 0);
@@ -51,6 +51,14 @@ class PairPipe: public Pipe
 
         bool CollideWith(Object* obj){
             return this->upper_pipe->CollideWith(obj) || this->lower_pipe->CollideWith(obj);
+        }
+
+        Pipe* GetUpperPipe() override{
+            return this->upper_pipe;
+        }
+
+        Pipe* GetLowerPipe() override{
+            return this->lower_pipe;
         }
 
     protected:

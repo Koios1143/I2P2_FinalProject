@@ -14,10 +14,11 @@ class Pipe: public Object
 {
     public:
         // x, y, angle, velocity, type(0: upward, 1: downward)
-        Pipe(int pos_x, int pos_y, double angle, int velocity = 0, int type = 0){
+        Pipe(int pos_x, int pos_y, double angle, int velocity = 0, int type = 0, int MultiPipe = 0){
             this->rect = new Rect(pos_x, pos_y, PIPE_W, PIPE_H);
             this->angle = angle;
             this->velocity = velocity;
+            this->MultiPipe = MultiPipe;
             if(type == 0) this->pipe_img = al_load_bitmap("./img/upward_pipe.png");
             else this->pipe_img = al_load_bitmap("./img/downward_pipe.png");
         }
@@ -39,6 +40,15 @@ class Pipe: public Object
             return this->rect->isRotateOverlap(this->rect, obj->getRect());
         }
 
+        virtual Pipe* GetUpperPipe(){
+            return NULL;
+        }
+
+        virtual Pipe* GetLowerPipe(){
+            return NULL;
+        }
+
+    int MultiPipe = 0;
     protected:
         ALLEGRO_BITMAP *pipe_img = NULL;
         double angle;

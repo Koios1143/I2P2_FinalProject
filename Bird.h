@@ -3,9 +3,6 @@
 #include "Object.h"
 #include "global.h"
 #include "MenuTitle.h"
-#define click_velocity -14
-#define gravity 1.1
-#define critical_velocity 16
 #define CLICK_RAD -(PI / 5)
 #define CRITICAL_RAD (PI / 2)
 

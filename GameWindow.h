@@ -24,7 +24,7 @@
 #define GAME_TERMINATE 5
 #define GAME_NEXT_LEVEL 6
 #define GAME_EXIT 7
-#define IMMORTAL 1
+#define IMMORTAL 0
 
 // clock rate
 const float FPS = 60;

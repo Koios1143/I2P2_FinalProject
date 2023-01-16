@@ -235,7 +235,7 @@ void GameWindow::show_err_msg(int msg)
 int GameWindow::game_update()
 {
     bool isreachground = false;
-    if (state != GAME_OVER) update_ground_pos();
+    if (state != GAME_OVER && state != BIRD_FALL) update_ground_pos();
     if (state == IN_GAME) {
         isreachground = flappyBird->Move(state);
         if (isreachground) {
@@ -245,9 +245,17 @@ int GameWindow::game_update()
         // check whether collid with any pipe
         if(IMMORTAL == 0){
             for(auto pipe: PIPEs){
-                if(flappyBird->isOverlap(pipe)){
-                    change_state = true;
-                    al_play_sample_instance(hitSound);
+                if(pipe->MultiPipe == 0){
+                    if(flappyBird->isOverlap(pipe)){
+                        change_state = true;
+                        al_play_sample_instance(hitSound);
+                    }
+                }
+                else{
+                    if(flappyBird->isOverlap(pipe->GetLowerPipe()) || flappyBird->isOverlap(pipe->GetUpperPipe())){
+                        change_state = true;
+                        al_play_sample_instance(hitSound);
+                    }
                 }
             }
         }
