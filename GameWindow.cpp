@@ -273,6 +273,12 @@ int GameWindow::game_update()
             }
         }
 
+        // update endflag
+        if(stage == 3 && endflag != NULL){
+            if(endflag->getRect()->x >= window_width / 4 + 200)
+                endflag->Update(-7, 0);
+        }
+
         // check whether collide with any pipe
         for(auto pipe: PIPEs){
             if(pipe->MultiPipe == 0){
@@ -391,6 +397,11 @@ void GameWindow::draw_running_map()
     if(state == IN_GAME && stage == 2 && flappyBoss != NULL){
         // Draw Boss when in stage 2
         flappyBoss->Draw();
+    }
+
+    // Draw endflag
+    if(state == IN_GAME && stage == 3 && endflag != NULL){
+        endflag->Draw();
     }
 
     // Draw Buttoms and Titles
@@ -513,7 +524,10 @@ int GameWindow::process_event()
                 else{
                     if(AddFinalPipe == false){
                         AddFinalPipe = true;
+                        // Generate Final Pipe
                         int y = generate_new_pipes();
+                        // Generate End flag
+                        endflag = new Endflag(window_width + 100, ground_height - 100);
                     }
                 }
 
@@ -650,8 +664,6 @@ int GameWindow::process_event()
             state = BIRD_FALL;
             stage = 0;
             AddFinalPipe = false;
-            delete flappyBoss;
-            flappyBoss = NULL;
         } else if (state == BIRD_FALL) {
             state = GAME_OVER;
 
@@ -668,14 +680,27 @@ int GameWindow::process_event()
             state = MENU;
             stage = 0;
 
+            // update flappy boss
+            if(flappyBoss != NULL){
+                delete flappyBoss;
+                flappyBoss = NULL;
+            }
+
             // update pipes
             while(!PIPEs.empty()){
                 delete PIPEs.back();
                 PIPEs.pop_back();
             }
+            // update bird
             while(!Bird_PIPEs.empty()){
                 delete Bird_PIPEs.back();
                 Bird_PIPEs.pop_back();
+            }
+
+            // update endflag
+            if(endflag != NULL){
+                delete endflag;
+                endflag = NULL;
             }
 
             // play menu bgm

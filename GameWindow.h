@@ -131,6 +131,8 @@ private:
     Bird *flappyBird;
 
     Boss *flappyBoss;
+
+    Endflag *endflag;
     
     int mouse_x, mouse_y;
     bool change_state = false;
