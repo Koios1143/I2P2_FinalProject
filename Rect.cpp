@@ -9,11 +9,11 @@ double distance(dot a, dot b){
     return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
 }
 
-bool Rect::isOverlap(Rect *rect_1, Rect *rect_2){
-    if(min(rect_1->x + rect_1->w, rect_2->x + rect_2->w) < max(rect_1->x, rect_2->x)){
+bool Rect::isOverlap(Rect *rect){
+    if(min(this->x + this->w, rect->x + rect->w) < max(this->x, rect->x)){
         return false;
     }
-    if(min(rect_1->y + rect_1->h, rect_2->y + rect_2->h) < max(rect_1->y, rect_2->y)){
+    if(min(this->y + this->h, rect->y + rect->h) < max(this->y, rect->y)){
         return false;
     }
     return true;

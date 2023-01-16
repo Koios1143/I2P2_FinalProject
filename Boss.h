@@ -1,27 +1,32 @@
 #ifndef BOSS_H_INCLUDED
 #define BOSS_H_INCLUDED
 #include "Object.h"
+#include "Weapon.h"
 #include "global.h"
+#include "PairPipe.h"
 #define ATTACK_VELOCITY 10
 #define INITIAL_Y (window_height / 3)
 #define CEILING = (INITIAL_Y - 115)
+// Anus Overflow
+#define RP 30
 
 class Boss: public Object
 {
     public:
         Boss();
         virtual ~Boss();
-        void Load_move();
+        void Load_move(int, int);
         void Draw();
-        void Move();
+        void Move(Pipe*);
         void Jump();
         void UpdatePhase(int);
-        void Attack(int, int);
-        bool isReachPipe();
+        int GetPhase();
+        int GetWeaponSize();
+        void Attack(Object*);
 
-        int counter;
-        int sprite_pos;
-        int img_count;
+        bool isReachPipe();
+        bool WeaponCollide(Object*);
+        void UpdateWeapons();
 
         double velocity = click_velocity;
         double acceleration = gravity;
@@ -29,7 +34,7 @@ class Boss: public Object
         static float volume;
 
     protected:
-        std::vector<ALLEGRO_BITMAP*> Img;
+        ALLEGRO_BITMAP* Img;
         ALLEGRO_SAMPLE_INSTANCE *attackSound = NULL;
         ALLEGRO_SAMPLE *sample = NULL;
 
@@ -37,6 +42,8 @@ class Boss: public Object
         // phase == 2: collide with pipe XDD
         int phase = 1;
         bool ReachPipe;
-}
+
+        std::vector<Weapon*> Weapons;
+};
 
 #endif

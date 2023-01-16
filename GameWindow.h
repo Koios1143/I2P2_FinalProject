@@ -8,6 +8,7 @@
 #include "OkButtom.h"
 #include "ResumeButtom.h"
 #include "Bird.h"
+#include "Boss.h"
 #include "Pipe.h"
 #include "PairPipe.h"
 #include "MenuTitle.h"
@@ -33,7 +34,8 @@ const float FPS = 60;
 const int LevelNum = 4;
 
 // score to next stage
-const int Level_1_Score_Max = 20;
+const int Level_1_Score_Max = 2;
+const int Level_2_Score_Max = 5;
 
 class GameWindow
 {
@@ -69,7 +71,7 @@ public:
     void groundDraw();
     void scoreDraw();
 
-    void generate_new_pipes();
+    int generate_new_pipes();
 
     inline ALLEGRO_TIMER* &GetTimer() { return this->timer; };
     
@@ -126,6 +128,8 @@ private:
     int immortal = 0;
 
     Bird *flappyBird;
+
+    Boss *flappyBoss;
     
     int mouse_x, mouse_y;
     bool change_state = false;
@@ -139,9 +143,11 @@ private:
 
     bool redraw = false;
     bool mute = false;
+    bool AddFinalPipe = false;
 
     // For pipes to know when to update
     int FPS_count;
+    int AttackCount;
 
     // the upper left corner of ground
     int ground_pos_x;

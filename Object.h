@@ -21,7 +21,7 @@ public:
 
     Rect *getRect() const { return rect; }
     bool isOverlap(Object* obj){
-        return this->rect->isOverlap(this->rect, obj->getRect());
+        return this->rect->isOverlap(obj->getRect());
     }
 
 protected:

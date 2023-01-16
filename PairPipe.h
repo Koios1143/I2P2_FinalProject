@@ -14,13 +14,24 @@ class PairPipe: public Pipe
 {
     public:
         // x, y, angle
-        PairPipe(int center_x, int center_y, double angle, int velocity = 0): Pipe(
+        PairPipe(int center_x, int center_y, double angle, int velocity = 0, int type = 0): Pipe(
             center_x - PIPE_W / 2, center_y - GAP_LEN / 2 - PIPE_H,
-            angle, velocity, 0, 1
+            angle, velocity, type, 1
         ){
             this->velocity = velocity;
-            this->lower_pipe = new Pipe(center_x - PIPE_W / 2, center_y + GAP_LEN / 2, angle, velocity, 0);
-            this->upper_pipe = new Pipe(center_x - PIPE_W / 2, center_y - GAP_LEN / 2 - PIPE_H, angle, velocity, 1);
+            this->type = type;
+            if(type == 0){
+                this->lower_pipe = new Pipe(center_x - PIPE_W / 2, center_y + GAP_LEN / 2, angle, velocity, 0);
+                this->upper_pipe = new Pipe(center_x - PIPE_W / 2, center_y - GAP_LEN / 2 - PIPE_H, angle, velocity, 1);
+            }
+            else if(type == 1){
+                this->lower_pipe = new Pipe(center_x - PIPE_W / 2, center_y + GAP_LEN / 2, angle, velocity, 2);
+                this->upper_pipe = new Pipe(center_x - PIPE_W / 2, center_y - GAP_LEN / 2 - PIPE_H, angle, velocity, 3);
+            }
+            else{
+                this->lower_pipe = new Pipe(center_x - PIPE_W / 2, center_y + GAP_LEN / 2, angle, velocity, 4);
+                this->upper_pipe = new Pipe(center_x - PIPE_W / 2, center_y - GAP_LEN / 2 - PIPE_H, angle, velocity, 5);
+            }
         }
         
         virtual ~PairPipe(){
@@ -46,7 +57,7 @@ class PairPipe: public Pipe
             }
             lower_pipe->UpdatePos(dx, velocity);
             upper_pipe->UpdatePos(dx, velocity);
-            this->rect->UpdatePos(dx, velocity);
+            this->rect->UpdatePos(this->lower_pipe->getRect()->x - this->rect->x, velocity);
         }
 
         bool CollideWith(Object* obj){
