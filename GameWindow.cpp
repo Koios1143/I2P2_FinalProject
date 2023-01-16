@@ -481,7 +481,7 @@ int GameWindow::generate_new_pipes(){
         int velocity = randint(PIPE_VELOCITY_MIN, PIPE_VELOCITY_MAX);
         double radian = 0;
         PIPEs.emplace_back(new PairPipe(window_width + 100, center, radian, velocity, 1));
-        Bird_PIPEs.emplace_back(new PairPipe(window_width + 100, center, radian, velocity));
+        Bird_PIPEs.emplace_back(new PairPipe(window_width + 100, center, radian, velocity, 1));
     }
     else{
         if(PIPEs.back()->GetType() == 1){
@@ -489,13 +489,17 @@ int GameWindow::generate_new_pipes(){
                 PIPEs.back()->GetLowerPipe()->UpdateType(0);
                 PIPEs.back()->GetUpperPipe()->UpdateType(1);
                 PIPEs.back()->UpdateType(0);
+
+                Bird_PIPEs.back()->GetLowerPipe()->UpdateType(0);
+                Bird_PIPEs.back()->GetUpperPipe()->UpdateType(1);
+                Bird_PIPEs.back()->UpdateType(0);
             }
         }
         center = window_height / 2 - 150;
         int velocity = 0;
         double radian = 0;
         PIPEs.emplace_back(new PairPipe(window_width + 100, center + 100, radian, velocity, 2));
-        Bird_PIPEs.emplace_back(new PairPipe(window_width + 100, center + 100, radian, velocity));
+        Bird_PIPEs.emplace_back(new PairPipe(window_width + 100, center + 100, radian, velocity, 2));
     }
     return center;
 }
