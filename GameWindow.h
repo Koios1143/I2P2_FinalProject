@@ -26,7 +26,8 @@
 #define GAME_TERMINATE 5
 #define GAME_NEXT_LEVEL 6
 #define GAME_EXIT 7
-#define ATTACK_PER_ROUND 7
+#define ATTACK_PER_ROUND 8
+#define LOAD_TIME 7
 
 // clock rate
 const float FPS = 60;

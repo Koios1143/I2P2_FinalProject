@@ -545,7 +545,7 @@ int GameWindow::process_event()
                         flappyBoss->UpdatePhase(2);
                     }
 
-                    if(flappyBoss->GetPhase() == 1 && flappyBoss->getRect()->x == MAXIMUM_BOSS_PIPE_X && FPS_count % ATTACK_PER_ROUND == (ATTACK_PER_ROUND - 1) && FPS_count < (ATTACK_PER_ROUND * (ATTACK_PER_ROUND - 1))){
+                    if(flappyBoss->GetPhase() == 1 && flappyBoss->getRect()->x == MAXIMUM_BOSS_PIPE_X && FPS_count % LOAD_TIME == (LOAD_TIME - 1) && FPS_count < (ATTACK_PER_ROUND * LOAD_TIME)){
                         flappyBoss->Attack(flappyBird);
                         AttackCount++;
                     }

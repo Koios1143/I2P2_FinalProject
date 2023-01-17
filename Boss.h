@@ -8,7 +8,7 @@
 #define INITIAL_Y (window_height / 3)
 #define CEILING = (INITIAL_Y - 115)
 // Anus Overflow
-#define RP 35
+#define RP 40
 
 class Boss: public Object
 {
