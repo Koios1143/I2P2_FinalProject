@@ -26,7 +26,7 @@
 #define GAME_TERMINATE 5
 #define GAME_NEXT_LEVEL 6
 #define GAME_EXIT 7
-#define ATTACK_PER_ROUND 8
+#define ATTACK_PER_ROUND 7
 #define LOAD_TIME 7
 
 // clock rate
@@ -36,8 +36,8 @@ const float FPS = 60;
 const int LevelNum = 4;
 
 // score to next stage
-const int Level_1_Score_Max = 2;
-const int Level_2_Score_Max = 5;
+const int Level_1_Score_Max = 7;
+const int Level_2_Score_Max = 14;
 
 class GameWindow
 {
